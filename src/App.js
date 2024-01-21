@@ -1,4 +1,5 @@
 import './App.css';
+import QRScanner from './components/QRScanner';
 
 function App() {
   return (
@@ -9,6 +10,14 @@ function App() {
         <div className='user-details'>
           Najm
         </div>
+      </div>
+      
+      <div className='main'>
+        <QRScanner />
+      </div>
+
+      <div className='App-footer'>
+        All Rights reserved c
       </div>
     </div>
   );
