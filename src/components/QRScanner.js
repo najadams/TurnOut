@@ -6,15 +6,16 @@ const QRScanner = ({ onScan }) => {
   const [scannedData, setScannedData] = useState(null);
 
   useEffect(() => {
+    let videoElement = null; // Store the video element for cleanup
+
     const startCamera = async () => {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
           video: true,
         });
 
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-        }
+        videoElement = videoRef.current; // Capture the current video element
+        videoElement.srcObject = stream;
       } catch (error) {
         console.error("Error accessing camera:", error);
       }
@@ -24,9 +25,9 @@ const QRScanner = ({ onScan }) => {
 
     const handleAnimationFrame = () => {
       if (
-        videoRef.current &&
-        videoRef.current.videoWidth > 0 &&
-        videoRef.current.videoHeight > 0
+        videoElement &&
+        videoElement.videoWidth > 0 &&
+        videoElement.videoHeight > 0
       ) {
         const canvas = document.createElement("canvas");
         const context = canvas.getContext("2d");
@@ -44,26 +45,24 @@ const QRScanner = ({ onScan }) => {
         const code = jsQR(imageData.data, imageData.width, imageData.height);
 
         if (code) {
-          setScannedData(code.data); // Set the scanned data state
-          onScan(code.data); // Trigger the onScan callback with the scanned data
+          setScannedData(code.data);
+          onScan(code.data);
         }
       }
 
       requestAnimationFrame(handleAnimationFrame);
     };
 
-
-    // Start the animation frame loop
     requestAnimationFrame(handleAnimationFrame);
 
     return () => {
-      // Clean up: stop the camera when the component unmounts
-      const tracks = videoRef.current?.srcObject?.getTracks();
+      // Clean up using the captured video element
+      const tracks = videoElement?.srcObject?.getTracks();
       if (tracks) {
         tracks.forEach((track) => track.stop());
       }
     };
-  }, [onScan]); // Include onScan in the dependency array
+  }, [onScan]);
 
   return (
     <div>
