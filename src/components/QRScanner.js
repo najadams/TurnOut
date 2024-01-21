@@ -11,7 +11,7 @@ const QRScanner = ({ onScan }) => {
     const startCamera = async () => {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
-          video: true,
+          video: {facingMode:'environment'},
         });
 
         videoElement = videoRef.current; // Capture the current video element
@@ -46,7 +46,7 @@ const QRScanner = ({ onScan }) => {
 
         if (code) {
           setScannedData(code.data);
-          onScan(code.data);
+          console.log(code.data)
         }
       }
 
@@ -62,7 +62,7 @@ const QRScanner = ({ onScan }) => {
         tracks.forEach((track) => track.stop());
       }
     };
-  }, [onScan]);
+  }, []);
 
   return (
     <div>
