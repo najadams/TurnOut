@@ -5,6 +5,10 @@ import { useNavigate } from "react-router-dom";
 
 const LectureDashboard = ({ isLoggedIn }) => {
   const navigate = useNavigate();
+
+  const logout = () => {
+
+  }
   useEffect(() => {
     if (!isLoggedIn) {
       navigate("/login");
@@ -30,5 +34,6 @@ const mapStateToProps = (state) => {
     isLoggedIn: state.lecturer.isLoggedIn,
   };
 };
+
 
 export default connect(mapStateToProps)(LectureDashboard);

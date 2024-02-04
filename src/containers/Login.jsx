@@ -263,7 +263,7 @@ const mapDispatchToProps = (dispatch) => {
       } catch (error) {
         console.error("Login failed:", error.message);
         dispatch(fetchStudentFailure(error));
-        // dispatch(logoutStudent());
+        dispatch(logoutStudent());
       }
     },
     handleLecturerLogin: async (email, password, navigate) => {
@@ -276,7 +276,7 @@ const mapDispatchToProps = (dispatch) => {
         console.log("Logged in user:", user);
       } catch (error) {
         dispatch(fetchLecturerFailure());
-        // dispatch(logoutLecturer());
+        dispatch(logoutLecturer());
       }
     },
   };

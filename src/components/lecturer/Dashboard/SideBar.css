@@ -120,8 +120,13 @@ body.dark {
   background: var(--primary-color);
 }
 
+.link {
+  text-decoration: none;
+}
+
 .sidebar li a:hover .icon,
-.sidebar li a:hover .text {
+.sidebar li a:hover .text,
+.link {
   color: var(--sidebar-color);
   transition: var(--trans-02);
 }
@@ -241,4 +246,13 @@ header .image-text .header-text {
 
 body.dark .switch::before {
   left: 25px;
+}
+
+.sidebar button {
+  background: transparent;
+  outline: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  font: bolder;
 }

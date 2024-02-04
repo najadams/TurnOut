@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import "./SideBar.css"; // Import the CSS file for styling
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { logoutLecturer } from "../../../actions/lecturers/lecturerActions";
 
-const SideBar = () => {
+const SideBar = ({ logout }) => {
   // Use state to manage the sidebar and dark mode
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -12,9 +15,9 @@ const SideBar = () => {
   };
 
   // Function to toggle dark mode
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-  };
+  // const toggleDarkMode = () => {
+  //   setIsDarkMode(!isDarkMode);
+  // };
 
   return (
     <nav
@@ -91,12 +94,14 @@ const SideBar = () => {
         </div>
 
         <div className="bottom-content">
-          <li>
-            <a href="#">
-              <i className="bx bx-log-out icon"></i>
-              <span className="text nav-text">Logout</span>
-            </a>
-          </li>
+          <Link to={"/"} className="link">
+            <li>
+              <button onClick={() => logout()}>
+                  <i className="bx bx-log-out icon"></i>
+                  <span className="text nav-text">Logout</span>
+              </button>
+            </li>
+          </Link>
 
           {/* <li className="mode" onClick={toggleDarkMode}>
             <div className="moon-sun">
@@ -115,4 +120,10 @@ const SideBar = () => {
   );
 };
 
-export default SideBar;
+const mapDispatchToProps = dispatch => {
+  return {
+    logout : () => dispatch(logoutLecturer())
+  }
+}
+
+export default connect(null, mapDispatchToProps)(SideBar);
