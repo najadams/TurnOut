@@ -1,62 +1,62 @@
-import {API_BASE_URL} from "../containers";
+import { API_BASE_URL } from "../containers";
 import axios from "axios";
 
 // not sure if this is working yet
 const loginStudent = async (email, password) => {
-   try {
-     const response = await fetch(`${API_BASE_URL}/login/student`, {
-       method: "POST",
-       headers: {
-         "Content-Type": "application/json",
-       },
-       body: JSON.stringify({
-         email,
-         password,
-       }),
-     });
+  try {
+    const response = await fetch(`${API_BASE_URL}/login/student`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
 
-     if (!response.ok) {
-       const errorData = await response.json();
-       throw new Error(errorData.message || "Login failed");
-     }
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Login failed");
+    }
 
-     const data = await response.json();
-     return data; // Return the response data if needed
-   } catch (error) {
-     console.error("Error during login:", error.message);
-     throw new Error("Login failed");
-   }
- };
+    const data = await response.json();
+    return data; // Return the response data if needed
+  } catch (error) {
+    console.error("Error during login:", error.message);
+    throw new Error("Login failed");
+  }
+};
 
 const loginLecturer = async (email, password) => {
-   try {
-     const response = await fetch(`${API_BASE_URL}/login/lecturer`, {
-       method: "POST",
-       headers: {
-         "Content-Type": "application/json",
-       },
-       body: JSON.stringify({
-         email,
-         password,
-       }),
-     });
+  try {
+    const response = await fetch(`${API_BASE_URL}/login/lecturer`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
 
-     if (!response.ok) {
-       const errorData = await response.json();
-       throw new Error(errorData.message || "Login failed");
-     }
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Login failed");
+    }
 
-     const data = await response.json();
-     return data; // Return the response data if needed
-   } catch (error) {
-     console.error("Error during login:", error.message);
-     throw new Error("Login failed");
-   }
- };
+    const data = await response.json();
+    return data; // Return the response data if needed
+  } catch (error) {
+    console.error("Error during login:", error.message);
+    throw new Error("Login failed");
+  }
+};
 
 // this is working
 const registerUser = async (userType, formData) => {
-  const apiEndpoint = 
+  const apiEndpoint =
     userType === "student"
       ? `${API_BASE_URL}/register/student`
       : `${API_BASE_URL}/register/lecturer`;
@@ -70,7 +70,7 @@ const registerUser = async (userType, formData) => {
 
     // Axios automatically throws an error for non-2xx responses
     const data = response.data;
-    console.log(data)
+    console.log(data);
     return data; // Return the response data if needed
   } catch (error) {
     if (error.response) {
