@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import LectureDashboard from "../components/lecturer/LectureDashboard";
+import LectureDashboard from "../components/lecturer/Dashboard/LectureDashboard";
 import LecturerClasses from "../components/lecturer/LecturerClasses";
 import LecturerAttendance from "../components/lecturer/LecturerAttendance";
 
