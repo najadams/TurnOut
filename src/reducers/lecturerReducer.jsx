@@ -28,7 +28,7 @@ export const lecturerReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        error: action.payload,
+        error: action.payload ,
       };
 
     case LOGIN_LECTURER: // Assuming you have a separate action for lecturer login

@@ -193,12 +193,19 @@ const Login = ({
         return;
       }
 
+      console.log(lecturerErr);
       if (userType == "student") {
         await handleStudentLogin(email, password, navigate);
-        setError(studentErr);
+        if (studentErr) {
+          setError(studentErr);
+          console.log(studentErr);
+        }
       } else {
         await handleLecturerLogin(email, password, navigate);
-        setError(lecturerErr);
+        if (lecturerErr) {
+          setError(lecturerErr);
+          console.log(lecturerErr);
+        }
       }
     } catch (error) {
       console.log(error);
@@ -247,6 +254,8 @@ const Login = ({
 const mapStateToProps = (state) => {
   return {
     userType: state.user,
+    lecturerErr: state.lecturer.error,
+    studentErr: state.student.error,
   };
 };
 
@@ -262,8 +271,8 @@ const mapDispatchToProps = (dispatch) => {
         navigate("/student");
       } catch (error) {
         console.error("Login failed:", error.message);
-        dispatch(fetchStudentFailure(error));
-        dispatch(logoutStudent());
+        dispatch(fetchStudentFailure(error.message));
+        // dispatch(logoutStudent());
       }
     },
     handleLecturerLogin: async (email, password, navigate) => {
@@ -275,8 +284,8 @@ const mapDispatchToProps = (dispatch) => {
         navigate("/lecturer");
         console.log("Logged in user:", user);
       } catch (error) {
-        dispatch(fetchLecturerFailure());
-        dispatch(logoutLecturer());
+        dispatch(fetchLecturerFailure(error.message));
+        // dispatch(logoutLecturer());
       }
     },
   };
