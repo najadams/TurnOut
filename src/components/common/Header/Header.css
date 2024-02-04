@@ -1,0 +1,90 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  /* background-color: #6ce361; */
+  background-image: linear-gradient(to left, rgb(154, 38, 208) , rgb(99, 99, 99));
+  color: black;
+}
+
+.right-section {
+  display: flex;
+  align-items: center;
+}
+
+.right-section a {
+  color: #03045e; /* Adjust color for better visibility */
+  text-decoration: none;
+  margin-right: 10px;
+}
+
+.left-section h1 {
+  margin: 0;
+}
+
+.app__navbar-smallscreen_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: var(--color-black);
+    transition: 0.5s ease; 
+
+    flex-direction: column;
+    z-index: 100;
+     
+}
+
+button {
+ display: inline-block;
+ width: 150px;
+ height: 50px;
+ border-radius: 10px;
+ border: 1px solid #03045e;
+ background-color: #4caf50;
+ position: relative;
+ overflow: hidden;
+ transition: all 0.5s ease-in;
+ z-index: 1;
+}
+
+button::before,
+button::after {
+ content: '';
+ position: absolute;
+ top: 0;
+ width: 0;
+ height: 100%;
+ transform: skew(15deg);
+ transition: all 0.5s;
+ overflow: hidden;
+ z-index: -1;
+}
+
+button::before {
+ left: -10px;
+ background: #240046;
+}
+
+button::after {
+ right: -10px;
+ background: #5a189a;
+}
+
+button:hover::before,
+button:hover::after {
+ width: 58%;
+}
+
+button:hover span {
+ color: #e0aaff;
+ transition: 0.3s;
+}
+
+button span {
+ color: #03045e;
+ font-size: 18px;
+ transition: all 0.3s ease-in;
+}
