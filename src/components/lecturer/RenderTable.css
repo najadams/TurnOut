@@ -1,22 +1,12 @@
-* {
-  margin: 0;
-  padding: 0;
-
-  box-sizing: border-box;
-  font-family: sans-serif;
-}
-
-body {
-  min-height: 100vh;
+.body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: url("../images/hero-slider-1.jpg") center / cover;
 }
 
 main.table {
-  width: 82vw;
-  height: 90vh;
+  width: 72vw;
+  height: 70vh;
   background-color: rgba(193, 188, 188, 0.333);
 
   backdrop-filter: blur(7px);

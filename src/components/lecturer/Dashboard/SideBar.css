@@ -62,6 +62,10 @@ body.dark {
 .sidebar.close .text {
   opacity: 0;
 }
+.sidebar.close .nav-text {
+  opacity: 0;
+  display: none;
+}
 
 /* ====== Reusable CSS  ====== */
 .sidebar .text {
@@ -259,12 +263,13 @@ body.dark .switch::before {
 
 .dashboard {
   display: flex;
+  /* justify-content: center; */
 }
 
 .main-content {
   flex-grow: 1;
   padding: 20px;
-  transition: var(--trans-03);
+  transition: margin-left 0.5s;
 }
 
 .sidebar.open ~ .main-content {

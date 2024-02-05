@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import SideBar from "./SideBar";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import RenderTable from "../RenderTable";
 
 const LectureDashboard = ({ isLoggedIn }) => {
   const navigate = useNavigate();
@@ -16,7 +17,10 @@ const LectureDashboard = ({ isLoggedIn }) => {
   return (
     <div className="dashboard">
       <SideBar />
-      <div className="main-content">lksjflkjd</div>
+      <div className="main-content">
+        lksjflkjd
+        <RenderTable />
+      </div>
     </div>
   );
 };
