@@ -3,7 +3,6 @@
   font-family: "Roboto", "Courier New", Courier, monospace;
   /* background-image: url("/public/bg.png"); */
   height: 100vh;
-  background-color: green;
 }
 
 .error-message {
@@ -11,8 +10,7 @@
 }
 
 .main {
-  height: 90vh;
-  padding-top: 50px;
+  height: 93vh;
   display: flex;
   align-items: center;
   justify-content: center;
