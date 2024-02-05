@@ -256,3 +256,21 @@ body.dark .switch::before {
   align-items: center;
   font: bolder;
 }
+
+.dashboard {
+  display: flex;
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 20px;
+  transition: var(--trans-03);
+}
+
+.sidebar.open ~ .main-content {
+  margin-left: 250px;
+}
+
+.sidebar.close ~ .main-content {
+  margin-left: 78px;
+}

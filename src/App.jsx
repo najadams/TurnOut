@@ -15,15 +15,17 @@ function App() {
   return (
     <Router>
       <Header />
-      <PersistGate persistor={persistor}>
-        <Routes>
-          <Route index to={"/"} element={<UserType />} />
-          <Route path={"/login"} element={<Login />} />
-          <Route path={"/register"} element={<Register />} />
-          <Route path={"/student/*"} element={<StudentRoutes />} />
-          <Route path={"/lecturer/*"} element={<LecturerRoutes />} />
-        </Routes>
-      </PersistGate>
+      <div className="App">
+        <PersistGate persistor={persistor}>
+          <Routes>
+            <Route index to={"/"} element={<UserType />} />
+            <Route path={"/login"} element={<Login />} />
+            <Route path={"/register"} element={<Register />} />
+            <Route path={"/student/*"} element={<StudentRoutes />} />
+            <Route path={"/lecturer/*"} element={<LecturerRoutes />} />
+          </Routes>
+        </PersistGate>
+      </div>
       {/* <Footer /> */}
     </Router>
   );

@@ -7,7 +7,7 @@ import { logoutLecturer } from "../../../actions/lecturers/lecturerActions";
 const SideBar = ({ logout }) => {
   // Use state to manage the sidebar and dark mode
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  // const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   // Function to toggle the sidebar
   const toggleSidebar = () => {
@@ -97,8 +97,8 @@ const SideBar = ({ logout }) => {
           <Link to={"/"} className="link">
             <li>
               <button onClick={() => logout()}>
-                  <i className="bx bx-log-out icon"></i>
-                  <span className="text nav-text">Logout</span>
+                <i className="bx bx-log-out icon"></i>
+                <span className="text nav-text">Logout</span>
               </button>
             </li>
           </Link>
@@ -120,10 +120,10 @@ const SideBar = ({ logout }) => {
   );
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    logout : () => dispatch(logoutLecturer())
-  }
-}
+    logout: () => dispatch(logoutLecturer()),
+  };
+};
 
 export default connect(null, mapDispatchToProps)(SideBar);

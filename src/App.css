@@ -1,8 +1,10 @@
 .App {
   text-align: center;
   font-family: "Roboto", "Courier New", Courier, monospace;
-  /* background-image: url("/public/bg.png"); */
-  height: 100vh;
+  background-image: url("/bg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 94vh;
 }
 
 .error-message {
@@ -15,9 +17,7 @@
   align-items: center;
   justify-content: center;
   /* background: #000; */
-  background-image: url("/bg.png");
-  background-repeat: no-repeat;
-  background-size: cover;
+
   /* margin: 0; */
 }
 
