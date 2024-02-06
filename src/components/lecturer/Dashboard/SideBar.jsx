@@ -6,7 +6,7 @@ import { logoutLecturer } from "../../../actions/lecturers/lecturerActions";
 
 const SideBar = ({ logout }) => {
   // Use state to manage the sidebar and dark mode
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   // Function to toggle the sidebar

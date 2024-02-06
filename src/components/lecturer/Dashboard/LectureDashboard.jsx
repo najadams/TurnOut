@@ -7,7 +7,6 @@ import RenderTable from "../RenderTable";
 const LectureDashboard = ({ isLoggedIn }) => {
   const navigate = useNavigate();
 
-  const logout = () => {};
   useEffect(() => {
     if (!isLoggedIn) {
       navigate("/login");
@@ -18,7 +17,6 @@ const LectureDashboard = ({ isLoggedIn }) => {
     <div className="dashboard">
       <SideBar />
       <div className="main-content">
-        lksjflkjd
         <RenderTable />
       </div>
     </div>

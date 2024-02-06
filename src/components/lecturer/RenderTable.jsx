@@ -1,18 +1,20 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./RenderTable.css";
 
 const RenderTable = () => {
   const [column, setColumn] = useState([]);
   const [record, setRecord] = useState([]);
 
-  axios
-    .get("https://jsonplaceholder.typicode.com/albums")
-    .then((res) => res.data)
-    .then((data) => {
-      setColumn(Object.keys(data[0]));
-      setRecord(data);
-    });
+  useEffect(() => {
+    axios
+      .get("https://jsonplaceholder.typicode.com/albums")
+      .then((res) => res.data)
+      .then((data) => {
+        setColumn(Object.keys(data[0]));
+        setRecord(data);
+      });
+  });
   return (
     // <main>
     //   RenderTable
@@ -35,12 +37,12 @@ const RenderTable = () => {
     //     </tbody>
     //   </table>
     // </main>
-    <div class="body">
-      <main class="table">
-        <section class="table__header">
+    <div className="body">
+      <main className="table">
+        <section className="table__header">
           <h1>Cutomer's Orders</h1>
         </section>
-        <section class="table__body">
+        <section className="table__body">
           <table>
             <thead>
               <tr>
