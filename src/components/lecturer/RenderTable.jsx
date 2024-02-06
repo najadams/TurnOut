@@ -16,27 +16,6 @@ const RenderTable = () => {
       });
   });
   return (
-    // <main>
-    //   RenderTable
-    //   <table>
-    //     <thead className="table__header">
-    //       <tr>
-    //         {column.map((header) => (
-    //           <th key={header}>{header}</th>
-    //         ))}
-    //       </tr>
-    //     </thead>
-    //     <tbody className="table__body">
-    //       {record.map((data) => (
-    //         <tr key={data.id}>
-    //           <td>{data.userId}</td>
-    //           <td>{data.id}</td>
-    //           <td>{data.title}</td>
-    //         </tr>
-    //       ))}
-    //     </tbody>
-    //   </table>
-    // </main>
     <div className="body">
       <main className="table">
         <section className="table__header">
