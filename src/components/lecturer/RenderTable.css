@@ -76,9 +76,14 @@ tbody tr:nth-child(even) {
   background-color: #0003;
 }
 
-tbody tr:hover {
-  background-color: #fff6;
+tbody {
+  font-family: "Poppins";
+  font-weight: 500;
 }
+
+/* tbody tr:hover {
+  background-color: #fff6;
+} */
 
 .status {
   padding: 0.4rem 0;
