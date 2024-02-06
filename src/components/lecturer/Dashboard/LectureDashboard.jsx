@@ -14,19 +14,9 @@ const LectureDashboard = ({ isLoggedIn }) => {
   });
   console.log(isLoggedIn);
   return (
-    <div className="dashboard">
-      <SideBar />
-      <div className="main-content">
         <RenderTable />
-      </div>
-    </div>
   );
 };
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     setUserType: (user) => dispatch(setUserType(user)),
-//   };
-// };
 
 const mapStateToProps = (state) => {
   return {
