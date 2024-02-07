@@ -29,6 +29,7 @@ const Login = ({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [classCode, setClassCode] = useState("");
   const [signUp, setSignUp] = useState(false);
 
   const onSubmit = async () => {
@@ -80,6 +81,19 @@ const Login = ({
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+          {userType === "student" && (
+            <>
+              <label htmlFor="classCode">classCode:</label>
+              <input
+                type="text"
+                id="classCode"
+                pattern="[0-9]"
+                value={classCode}
+                onChange={(e) => setClassCode(e.target.value)}
+                required
+              />
+            </>
+          )}
 
           <button
             type="submit"
@@ -98,7 +112,7 @@ const Login = ({
           )}
 
           {userType == "lecturer" && signUp && (
-            <button onClick={() => navigate('/register')}>
+            <button onClick={() => navigate("/register")}>
               <span>Sign UP</span>
             </button>
           )}
