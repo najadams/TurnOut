@@ -101,7 +101,6 @@ const RenderTable = () => {
             <tbody>
               {record.map((data) => (
                 <tr key={data._id}>
-                  {/* Assuming "_id" is a unique identifier */}
                   {/* <td>{data._id}</td> */}
                   <td>{data.firstname}</td>
                   <td>{data.lastname}</td>
