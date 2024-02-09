@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./SideBar.css"; // Import the CSS file for styling
-import { Link } from "react-router-dom";
+import {Link, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import { logoutLecturer } from "../../../actions/lecturers/lecturerActions";
 
@@ -55,22 +55,28 @@ const SideBar = ({ logout }) => {
 
           <ul className="menu-links">
             <li className="nav-link">
-              <a href="#">
+              <NavLink to={"/lecturer/dashboard"} activeclassname="active">
                 <i className="bx bxs-home icon"></i>
                 <span className="text nav-text">DashBoard</span>
-              </a>
+              </NavLink>
             </li>
             <li className="nav-link">
-              <Link to={"/lecturer/classes"}>
+              <NavLink to={"/lecturer/classes"} activeclassname="active">
                 <i className="bx bxs-bar-chart-alt-2 icon"></i>
                 <span className="text nav-text">Attendance</span>
-              </Link>
+              </NavLink>
             </li>
             <li className="nav-link">
-              <a href="#">
+              <NavLink to={"/lecturer/attendance"} activeclassname="active">
                 <i className="bx bxs-bell icon"></i>
                 <span className="text nav-text">Notification</span>
-              </a>
+              </NavLink>
+            </li>
+            <li className="nav-link">
+              <NavLink to={"/lecturer/createClass"} activeclassname="active">
+                <i className="bx bxs-user-plus icon"></i>
+                <span className="text nav-text">Notification</span>
+              </NavLink>
             </li>
             <li className="nav-link">
               <a href="#">

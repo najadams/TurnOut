@@ -4,7 +4,7 @@ const initialState = {
   lecturerInfo: {},
   loading: false,
   error: "",
-  students: [],
+  classes: [],
 };
 
 export const lecturerReducer = (state = initialState, action) => {
@@ -43,7 +43,7 @@ export const lecturerReducer = (state = initialState, action) => {
         ...state,
         isLoggedIn: false,
         lecturerInfo: {}, // Reset lecturer information on logout
-        students : [],
+        classes : [],
         error: "",
       };
 

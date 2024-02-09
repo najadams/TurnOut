@@ -7,7 +7,7 @@ const Register = () => {
   const navigate = useNavigate();
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
-  const [email, setEmail] = useState("");
+  const [referenceId, setReferenceId] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(null);
@@ -28,7 +28,7 @@ const Register = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          email,
+          referenceId,
           password,
           firstname,
           lastname,
@@ -39,7 +39,7 @@ const Register = () => {
 
       if (!response.ok) {
         console.error("Registration failed. Server returned:", data); // Log detailed error information
-        setError("Registration failed. Please check the provided information.");
+        setError("Registration failed. Please check your network Connection.");
       } else {
         console.log("Registration successful:", data.message);
         navigate('/login')
@@ -75,12 +75,12 @@ const Register = () => {
             required
           />
 
-          <label htmlFor="email">Email:</label>
+          <label htmlFor="referenceId">ReferenceId:</label>
           <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            id="refernceId"
+            value={referenceId}
+            onChange={(e) => setReferenceId(e.target.value)}
             required
           />
 

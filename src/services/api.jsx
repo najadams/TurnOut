@@ -28,7 +28,7 @@ const loginStudent = async (email, password) => {
   }
 };
 
-const loginLecturer = async (email, password) => {
+const loginLecturer = async (referenceId, password) => {
   try {
     const response = await fetch(`${API_BASE_URL}/login/lecturer`, {
       method: "POST",
@@ -36,7 +36,7 @@ const loginLecturer = async (email, password) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email,
+        referenceId,
         password,
       }),
     });
@@ -47,10 +47,10 @@ const loginLecturer = async (email, password) => {
     }
 
     const data = await response.json();
-    return data; // Return the response data if needed
+    return data;
   } catch (error) {
     console.error("Error during login:", error.message);
-    throw new Error("Login failed");
+    throw new Error(error.message);
   }
 };
 

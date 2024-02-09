@@ -26,7 +26,7 @@ const Login = ({
   studentErr,
 }) => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
+  const [referenceId, setReferenceId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   // const [classCode, setClassCode] = useState("");
@@ -38,20 +38,20 @@ const Login = ({
   // }
   const onSubmit = async () => {
     try {
-      if (!email || !password) {
+      if (!referenceId || !password) {
         setError("Please fill in all fields");
         return;
       }
 
       console.log(lecturerErr);
       if (userType == "student") {
-        await handleStudentLogin(email, password, navigate);
+        await handleStudentLogin(referenceId, password, navigate);
         if (studentErr) {
           setError(studentErr);
           console.log(studentErr);
         }
       } else {
-        await handleLecturerLogin(email, password, navigate);
+        await handleLecturerLogin(referenceId, password, navigate);
         if (lecturerErr) {
           setError(lecturerErr);
         }
@@ -67,12 +67,12 @@ const Login = ({
         <form className="login-form">
           <h2>Login</h2>
 
-          <label htmlFor="email">Email:</label>
+          <label htmlFor="refernceId">Reference Id:</label>
           <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            id="referenceId"
+            value={referenceId}
+            onChange={(e) => setReferenceId(e.target.value)}
             required
           />
 
@@ -84,19 +84,6 @@ const Login = ({
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          {/* {userType === "student" && (
-            <>
-              <label htmlFor="classCode">classCode:</label>
-              <input
-                type="text"
-                id="classCode"
-                pattern="[0-9]"
-                value={classCode}
-                onChange={(e) => setClassCode(e.target.value)}
-                required
-              />
-            </>
-          )} */}
 
           <button
             type="submit"

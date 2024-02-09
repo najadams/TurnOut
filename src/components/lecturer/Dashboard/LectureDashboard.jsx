@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import RenderTable from "../RenderTable";
 
 const LectureDashboard = ({ isLoggedIn }) => {
-
+ 
   console.log(isLoggedIn);
   return <RenderTable />;
 };
