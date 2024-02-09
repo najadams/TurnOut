@@ -1,11 +1,9 @@
 import "./QRScanner.css";
 import React, { useEffect, useRef, useState } from "react";
 import jsQR from "jsqr";
-import { useUser } from "../context/UserContex";
 import { API_BASE_URL } from "../containers";
 
 const QRScanner = ({ onScan }) => {
-  const { user } = useUser();
   const videoRef = useRef(null);
   const [scannedData, setScannedData] = useState(null);
   const [serverQRCodeData, setServerQrCodeData] = useState(null);
@@ -131,12 +129,12 @@ const QRScanner = ({ onScan }) => {
     compareData();
   }, [scannedData, serverQRCodeData]);
 
-  if (mark) {
-    markUserAsPresent(user.studentId)
-  }
+  // if (mark) {
+  //   markUserAsPresent(user.studentId)
+  // }
   return (
     <div className="scannerContent">
-      {!scannedData && user && (
+      {!scannedData && (
         <video
           ref={videoRef}
           autoPlay

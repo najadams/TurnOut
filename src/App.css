@@ -1,9 +1,10 @@
 .App {
   text-align: center;
   font-family: "Roboto", "Courier New", Courier, monospace;
-  background-image: url("/bg.png");
+  /* background-image: url("/bg.png");
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: cover; */
+  /* background-color: #fff; */
   height: 94vh;
   overflow: auto;
   position: relative;

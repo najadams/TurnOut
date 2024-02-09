@@ -29,9 +29,13 @@ const Login = ({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [classCode, setClassCode] = useState("");
+  // const [classCode, setClassCode] = useState("");
   const [signUp, setSignUp] = useState(false);
 
+  // if (lecturerErr) {
+  //   console.log(lecturerErr);
+  // setError(lecturerErr);
+  // }
   const onSubmit = async () => {
     try {
       if (!email || !password) {
@@ -50,7 +54,6 @@ const Login = ({
         await handleLecturerLogin(email, password, navigate);
         if (lecturerErr) {
           setError(lecturerErr);
-          console.log(lecturerErr);
         }
       }
     } catch (error) {
@@ -81,7 +84,7 @@ const Login = ({
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          {userType === "student" && (
+          {/* {userType === "student" && (
             <>
               <label htmlFor="classCode">classCode:</label>
               <input
@@ -93,7 +96,7 @@ const Login = ({
                 required
               />
             </>
-          )}
+          )} */}
 
           <button
             type="submit"
@@ -141,8 +144,8 @@ const mapDispatchToProps = (dispatch) => {
         console.log("Logged in user:", user);
         navigate("/student");
       } catch (error) {
-        console.error("Login failed:", error.message);
         dispatch(fetchStudentFailure(error.message));
+        console.error("Login failed:", error.message);
         // dispatch(logoutStudent());
       }
     },
@@ -156,6 +159,7 @@ const mapDispatchToProps = (dispatch) => {
         console.log("Logged in user:", user);
       } catch (error) {
         dispatch(fetchLecturerFailure(error.message));
+        console.error("Login failed:", error.message);
         // dispatch(logoutLecturer());
       }
     },

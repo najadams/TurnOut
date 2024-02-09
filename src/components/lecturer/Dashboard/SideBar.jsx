@@ -61,10 +61,10 @@ const SideBar = ({ logout }) => {
               </a>
             </li>
             <li className="nav-link">
-              <a href="#">
+              <Link to={"/lecturer/classes"}>
                 <i className="bx bxs-bar-chart-alt-2 icon"></i>
-                <span className="text nav-text">Revenue</span>
-              </a>
+                <span className="text nav-text">Attendance</span>
+              </Link>
             </li>
             <li className="nav-link">
               <a href="#">

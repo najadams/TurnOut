@@ -4,11 +4,12 @@
  */
 
 import React from 'react'
+import ScannerPage from '../../containers/ScannerPage'
 
 const StudentDashboard = () => {
   return (
 
-    <div className='main'>StudentDashboard</div>
+    <div className='main'><ScannerPage /></div>
   )
 }
 

@@ -1,21 +1,12 @@
 import React, { useEffect } from "react";
-import SideBar from "./SideBar";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import RenderTable from "../RenderTable";
 
 const LectureDashboard = ({ isLoggedIn }) => {
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!isLoggedIn) {
-      navigate("/login");
-    }
-  });
   console.log(isLoggedIn);
-  return (
-        <RenderTable />
-  );
+  return <RenderTable />;
 };
 
 const mapStateToProps = (state) => {
