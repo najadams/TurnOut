@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Login.css";
 import { useNavigate } from "react-router";
 import {
@@ -24,6 +24,7 @@ const Login = ({
   handleLecturerLogin,
   lecturerErr,
   studentErr,
+  isLoggedIn,
 }) => {
   const navigate = useNavigate();
   const [referenceId, setReferenceId] = useState("");
@@ -32,10 +33,6 @@ const Login = ({
   // const [classCode, setClassCode] = useState("");
   const [signUp, setSignUp] = useState(false);
 
-  // if (lecturerErr) {
-  //   console.log(lecturerErr);
-  // setError(lecturerErr);
-  // }
   const onSubmit = async () => {
     try {
       if (!referenceId || !password) {
@@ -61,6 +58,12 @@ const Login = ({
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/lecturer/dashboard/");
+    }
+  });
 
   return (
     <div className="main">
@@ -116,6 +119,9 @@ const Login = ({
 const mapStateToProps = (state) => {
   return {
     userType: state.user,
+    isLoggedIn: state.student.isLoggedIn
+      ? state.student.isLoggedIn
+      : state.lecturer.isLoggedIn,
     lecturerErr: state.lecturer.error,
     studentErr: state.student.error,
   };
@@ -140,7 +146,7 @@ const mapDispatchToProps = (dispatch) => {
     handleLecturerLogin: async (email, password, navigate) => {
       try {
         dispatch(fetchLecturerRequest());
-        const user  = await loginLecturer(email, password);
+        const user = await loginLecturer(email, password);
         dispatch(setLecturerData(user));
         dispatch(loginLecturerSuccess());
         navigate("/lecturer");
