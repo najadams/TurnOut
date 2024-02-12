@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./SideBar.css"; // Import the CSS file for styling
-import {Link, NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import { logoutLecturer } from "../../../actions/lecturers/lecturerActions";
 
@@ -62,8 +62,9 @@ const SideBar = ({ logout }) => {
             </li>
             <li className="nav-link">
               <NavLink to={"/lecturer/classes"} activeclassname="active">
-                <i className="bx bxs-bar-chart-alt-2 icon"></i>
-                <span className="text nav-text">Attendance</span>
+                {/* <i className="bx bxs-bar-chart-alt-2 icon"></i> */}
+                <i class="bx bxs-user-check icon"></i>
+                <span className="text nav-text">Mark Attendance</span>
               </NavLink>
             </li>
             <li className="nav-link">
@@ -75,7 +76,7 @@ const SideBar = ({ logout }) => {
             <li className="nav-link">
               <NavLink to={"/lecturer/createClass"} activeclassname="active">
                 <i className="bx bxs-user-plus icon"></i>
-                <span className="text nav-text">Notification</span>
+                <span className="text nav-text">Create Class</span>
               </NavLink>
             </li>
             <li className="nav-link">
