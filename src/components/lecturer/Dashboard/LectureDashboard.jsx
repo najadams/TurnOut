@@ -11,8 +11,7 @@ const LecturerDashboard = () => {
         const response = await fetch(`${API_BASE_URL}/classes`);
         const data = await response.json();
         // Assuming the response has a 'classes' property
-        setClasses(data.classes);
-        console.log(data.classes);
+        setClasses(data.data);
       } catch (error) {
         console.error("Error fetching classes:", error);
       }
@@ -23,12 +22,14 @@ const LecturerDashboard = () => {
 
   return (
     <div>
-      <h1>Lecturer Dashboard</h1>
+      <h2>Lecturer Dashboard</h2>
       <div>
-        <h2>Your Classes</h2>
-        <ul>
+        <h2 style={{ paddingBottom: 50 }}>Your Classes</h2>
+        <ul className="dashboard-list">
           {classes.map((cls) => (
-            <li key={cls.index}>{cls}</li>
+            <li className="login-form card" key={cls._id}>
+              {cls.name}
+            </li>
           ))}
         </ul>
       </div>

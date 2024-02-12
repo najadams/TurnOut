@@ -70,27 +70,37 @@ const ExcelUploader = () => {
     }
   };
 
-  const createClass = async (e) => {
-    e.preventDefault();
+   const createClass = async (e) => {
+     e.preventDefault();
 
-    setLoading(true);
-    try {
-      const collectionData = {
-        ClassName: name,
-        lecturerId: lecturerInfo._id,
-        headers: excelData.headers,
-        rows: excelData.rows,
-      };
+     setLoading(true);
+     try {
+       if (!excelData) {
+         setError("Please upload an Excel file first.");
+         return;
+       }
 
-      const res = await createMongoCollection(collectionData);
-      console.log(res);
-      setError("");
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+       const collectionData = {
+         ClassName: name,
+         lecturerId: lecturerInfo._id,
+         headers: excelData.headers,
+         rows: excelData.rows,
+       };
+
+       const response = await axios.post(
+         `${API_BASE_URL}/createMongoCollection`,
+         collectionData
+       );
+
+       console.log(response.data);
+       setError("");
+       setCompleted(true);
+     } catch (error) {
+       setError(error.message);
+     } finally {
+       setLoading(false);
+     }
+   };
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
@@ -99,7 +109,7 @@ const ExcelUploader = () => {
   });
 
   return (
-    <div className="card">
+    <div className="fcard">
       <h2 style={{ paddingBottom: 50 }}>Create New Class</h2>
       {!completed ? (
         <form onSubmit={createClass}>

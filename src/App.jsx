@@ -14,8 +14,8 @@ import { persistor } from "./store/configureStore";
 function App() {
   return (
     <Router>
-      <Header />
       <div className="App">
+      <Header />
         <PersistGate persistor={persistor}>
           <Routes>
             <Route index to={"/"} element={<UserType />} />
@@ -25,8 +25,8 @@ function App() {
             <Route path={"/lecturer/*"} element={<LecturerRoutes />} />
           </Routes>
         </PersistGate>
-      </div>
       {/* <Footer /> */}
+      </div>
     </Router>
   );
 }
