@@ -9,30 +9,21 @@ const Header = ({ isLoggedIn, userName }) => {
         <h1>TurnOut</h1>
       </div>
 
-      {/* <div className="right-section">
-        {isLoggedIn ? (
-          <span>Welcome, {userName}!</span>
-        ) : (
-          <div className="details">
-            <a href="/signin">
-              <button>
-                <span>Sign In</span>
-              </button>
-            </a>
-            <a href="/signup">
-              <button>Sign Up</button>
-            </a>
-          </div>
-        )}
-      </div> */}
+      <div className="right-section">
+        {isLoggedIn && <h3>Welcome {userName.toUpperCase()}!</h3>}
+      </div>
     </header>
   );
 };
 
 const mapStateToProps = (state) => ({
-  isLoggedIn: state.student.isLoggedIn, 
+  isLoggedIn: state.student.isLoggedIn
+    ? state.student.isLoggedIn
+    : state.lecturer.isLoggedIn,
   // userName: state.student.data.userName, // Replace with actual state
-  userName : 'naj'
+  userName: state.student.isLoggedIn
+    ? state.student.data.user.firstanem
+    : state.lecturer.lecturerInfo.user.firstname,
 });
 
 export default connect(mapStateToProps)(Header);
