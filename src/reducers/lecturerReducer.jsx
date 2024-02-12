@@ -1,4 +1,11 @@
-import { LOGIN_LECTURER, LOGOUT_LECTURER, FETCH_LECTURER_FAILURE, FETCH_LECTURER_REQUEST, SET_LECTURER_DATA } from "../actions/lecturers/lecturerActions";
+import {
+  LOGIN_LECTURER,
+  LOGOUT_LECTURER,
+  FETCH_LECTURER_FAILURE,
+  GET_CLASSES_SUCCESS,
+  FETCH_LECTURER_REQUEST,
+  SET_LECTURER_DATA,
+} from "../actions/lecturers/lecturerActions";
 const initialState = {
   isLoggedIn: false,
   lecturerInfo: {},
@@ -28,13 +35,20 @@ export const lecturerReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        error: action.payload ,
+        error: action.payload,
       };
 
-    case LOGIN_LECTURER: // Assuming you have a separate action for lecturer login
+    case LOGIN_LECTURER:
       return {
         ...state,
         isLoggedIn: true,
+        error: "",
+      };
+
+    case GET_CLASSES_SUCCESS:
+      return {
+        ...state,
+        classes: action.payload,
         error: "",
       };
 
@@ -43,7 +57,7 @@ export const lecturerReducer = (state = initialState, action) => {
         ...state,
         isLoggedIn: false,
         lecturerInfo: {}, // Reset lecturer information on logout
-        classes : [],
+        classes: [],
         error: "",
       };
 

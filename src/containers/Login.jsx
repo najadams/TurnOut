@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./Login.css";
 import { useNavigate } from "react-router";
 import {
@@ -52,6 +52,7 @@ const Login = ({
         }
       } else {
         await handleLecturerLogin(referenceId, password, navigate);
+        console.log(lecturerInfo);
         if (lecturerErr) {
           setError(lecturerErr);
         }
@@ -139,7 +140,7 @@ const mapDispatchToProps = (dispatch) => {
     handleLecturerLogin: async (email, password, navigate) => {
       try {
         dispatch(fetchLecturerRequest());
-        const user = await loginLecturer(email, password);
+        const user  = await loginLecturer(email, password);
         dispatch(setLecturerData(user));
         dispatch(loginLecturerSuccess());
         navigate("/lecturer");

@@ -6,6 +6,7 @@ export const LOGIN_LECTURER = "LOGIN_LECTURER";
 export const LOGIN_LECTURER_FAILURE = "LOGIN_LECTURER_FAILURE";
 export const GET_STUDENTS_SUCCESS = "GET_STUDENTS_SUCCESS";
 export const GET_STUDENTS_FAILURE = "GET_STUDENTS_FAILURE";
+export const GET_CLASSES_SUCCESS = "GET_CLASSES_SUCCESS";
 
 
 export const fetchLecturerRequest = () => ({
@@ -38,50 +39,13 @@ export const getStudentsSuccess = (students) => ({
   type: GET_STUDENTS_SUCCESS,
   payload: students,
 });
+export const getClasses = (classes) => ({
+  type: GET_CLASSES_SUCCESS,
+  payload: classes,
+});
 
 // Action creator for failure in student data retrieval
 export const getStudentsFailure = (error) => ({
   type: GET_STUDENTS_FAILURE,
   payload: error,
 });
-
-// export const getLecturerLoggedIn = (email, password) => {
-//   return async (dispatch) => {
-//     dispatch(fetchLecturerRequest());
-
-//     try {
-//       const response = await fetch(`${API_BASE_URL}/login`, {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({ email, password }),
-//       });
-
-//       if (!response.ok) {
-//         const errorData = await response.json();
-//         dispatch(loginLecturerFailure(errorData.message || "Login failed"));
-//         throw new Error(errorData.message || "Login failed");
-//       }
-
-//       const data = await response.json();
-
-//       const { token, user } = data;
-
-//       // Save the token in local storage
-//       // setTokenInStorage(token);
-
-//       // Dispatch the success action with the user data
-//       dispatch(loginLecturerSuccess());
-
-//       // Dispatch setLecturerData action to update lecturer information in the state
-//       dispatch(setLecturerData(user));
-
-//       return user; // Return the user data if needed
-//     } catch (error) {
-//       console.error("Error during login:", error.message);
-//       dispatch(loginLecturerFailure("Login failed"));
-//       throw new Error("Login failed");
-//     }
-//   };
-// };

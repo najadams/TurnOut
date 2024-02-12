@@ -4,8 +4,10 @@ import * as XLSX from "xlsx";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { API_BASE_URL } from "../../containers";
+import { useNavigate } from "react-router-dom";
 
 const ExcelUploader = () => {
+  const navigate = useNavigate();
   const [excelData, setExcelData] = useState(null);
   const [name, setName] = useState("");
   const [error, setError] = useState("");
@@ -80,7 +82,8 @@ const ExcelUploader = () => {
         rows: excelData.rows,
       };
 
-      await createMongoCollection(collectionData);
+      const res = await createMongoCollection(collectionData);
+      console.log(res);
       setError("");
     } catch (error) {
       setError(error.message);
@@ -93,10 +96,6 @@ const ExcelUploader = () => {
     onDrop,
     accept: ".xlsx, .xls",
     maxFiles: 1,
-  });
-
-  useEffect(() => {
-    console.log(lecturerInfo.referenceId);
   });
 
   return (
@@ -137,8 +136,11 @@ const ExcelUploader = () => {
           )}
         </form>
       ) : (
-        <div className="cl">
+        <div>
           <h3>{name} created successfully </h3>
+          <button onClick={() => navigate("/lecturer/dashboard")}>
+            <span>DashBoard</span>
+          </button>
         </div>
       )}
     </div>
