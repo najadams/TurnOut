@@ -1,29 +1,35 @@
 import React, { useEffect, useState } from "react";
 import { API_BASE_URL } from "../../../containers";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 const LecturerDashboard = () => {
   const [classes, setClasses] = useState([]);
+  const lecturerId = useSelector(
+    (state) => state.lecturer.lecturerInfo.user._id
+  );
 
   useEffect(() => {
-    // Fetch classes data when the component mounts
-    const fetchClasses = async () => {
+    const fetchClasses = async (lecturerId) => {
       try {
-        const response = await fetch(`${API_BASE_URL}/classes`);
-        const data = await response.json();
-        // Assuming the response has a 'classes' property
-        setClasses(data.data);
+        // Use axios to send a POST request with the lecturerId
+        const response = await axios.post(`${API_BASE_URL}/classes`, {
+          lecturerId,
+        });
+        // Access data directly from the response
+        setClasses(response.data.data);
       } catch (error) {
         console.error("Error fetching classes:", error);
       }
     };
 
-    fetchClasses();
-  }, []);
+    fetchClasses(lecturerId);
+  }, [lecturerId]);
 
   return (
     <div>
-      <h2>Lecturer Dashboard</h2>
+      <h2 className="Page-name">Lecturer Dashboard</h2>
       <div>
         <h2 style={{ paddingBottom: 50 }}>Your Classes</h2>
         <ul className="dashboard-list">
@@ -31,7 +37,7 @@ const LecturerDashboard = () => {
             <Link
               style={{ textDecoration: "none" }}
               key={cls._id}
-              to={`classe/${cls._id}`}>
+              to={`class/${cls._id}`}>
               <li className="login-form card">{cls.name}</li>
             </Link>
           ))}

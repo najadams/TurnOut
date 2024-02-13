@@ -26,7 +26,7 @@ const LecturerRoutes = ({ userType, isLoggedIn }) => {
           <Route path="/classes" element={<LecturerClasses />} />
           <Route path="/attendance" element={<LecturerAttendance />} />
           <Route path="/createClass" element={<ExcelUploader />} />
-          <Route path="/class/:classId" element={<ClassDetails />} />
+          <Route path="/dashboard/class/:classId" element={<ClassDetails />} />
         </Routes>
       </div>
     </div>

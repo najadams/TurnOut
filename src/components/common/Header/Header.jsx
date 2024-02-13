@@ -10,7 +10,7 @@ const Header = ({ isLoggedIn, userName }) => {
       </div>
 
       <div className="right-section">
-        {isLoggedIn && <h3>Welcome {userName.toUpperCase()}!</h3>}
+        {isLoggedIn && userName && <h3>Welcome {userName.toUpperCase()}!</h3>}
       </div>
     </header>
   );
@@ -22,8 +22,10 @@ const mapStateToProps = (state) => ({
     : state.lecturer.isLoggedIn,
   // userName: state.student.data.userName, // Replace with actual state
   userName: state.student.isLoggedIn
-    ? state.student.data.user.firstanem
-    : state.lecturer.lecturerInfo.user.firstname,
+    ? state.student.data.user.firstname || null
+    : state.lecturer.isLoggedIn
+    ? state.lecturer.lecturerInfo.user.firstname || null
+    : null,
 });
 
 export default connect(mapStateToProps)(Header);

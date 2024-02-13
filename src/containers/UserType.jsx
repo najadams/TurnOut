@@ -16,7 +16,6 @@ const UserType = ({ setUserType, userType, isLoggedIn }) => {
     navigate("/login");
   };
   useEffect(() => {
-    console.log(userType);
     if (isLoggedIn && userType == "student") {
       navigate("/student/dashboard");
     }

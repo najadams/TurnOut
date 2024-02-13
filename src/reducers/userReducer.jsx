@@ -3,9 +3,9 @@ const initialState = {
 };
 
 export const setUserType = (userType) => {
-  console.log(userType);
+  console.log(userType)
   return {
-    // type: "SET_USER_TYPE",
+    type: "SET_USER_TYPE",
     userType,
   };
 };

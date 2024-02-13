@@ -15,8 +15,13 @@
   height: 92.5%;
 }
 
+.Page-name {
+  padding-bottom: 50px;
+}
 .error-message {
   color: red;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-weight: 100;
 }
 
 .main {
