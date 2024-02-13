@@ -7,6 +7,7 @@ import SideBar from "../components/lecturer/Dashboard/SideBar";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ExcelUploader from "../components/lecturer/ExcelUploader";
+import ClassDetails from "../components/lecturer/ClassDetails";
 
 const LecturerRoutes = ({ userType, isLoggedIn }) => {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const LecturerRoutes = ({ userType, isLoggedIn }) => {
     if (userType == "student" || !isLoggedIn) {
       navigate("/login");
     }
-  });
+  }, []);
   return (
     <div className="dashboard">
       <SideBar />
@@ -25,6 +26,7 @@ const LecturerRoutes = ({ userType, isLoggedIn }) => {
           <Route path="/classes" element={<LecturerClasses />} />
           <Route path="/attendance" element={<LecturerAttendance />} />
           <Route path="/createClass" element={<ExcelUploader />} />
+          <Route path="/class/:classId" element={<ClassDetails />} />
         </Routes>
       </div>
     </div>

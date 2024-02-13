@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { API_BASE_URL } from "../../../containers";
+import { Link } from "react-router-dom";
 
 const LecturerDashboard = () => {
   const [classes, setClasses] = useState([]);
@@ -27,9 +28,12 @@ const LecturerDashboard = () => {
         <h2 style={{ paddingBottom: 50 }}>Your Classes</h2>
         <ul className="dashboard-list">
           {classes.map((cls) => (
-            <li className="login-form card" key={cls._id}>
-              {cls.name}
-            </li>
+            <Link
+              style={{ textDecoration: "none" }}
+              key={cls._id}
+              to={`classe/${cls._id}`}>
+              <li className="login-form card">{cls.name}</li>
+            </Link>
           ))}
         </ul>
       </div>

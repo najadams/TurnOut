@@ -63,7 +63,7 @@ const SideBar = ({ logout }) => {
             <li className="nav-link">
               <NavLink to={"/lecturer/classes"} activeclassname="active">
                 {/* <i className="bx bxs-bar-chart-alt-2 icon"></i> */}
-                <i class="bx bxs-user-check icon"></i>
+                <i className="bx bxs-user-check icon"></i>
                 <span className="text nav-text">Mark Attendance</span>
               </NavLink>
             </li>

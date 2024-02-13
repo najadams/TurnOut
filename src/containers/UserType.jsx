@@ -1,21 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { setUserType } from "../reducers/userReducer";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-
-const UserType = ({ setUserType }) => {
+const UserType = ({ setUserType, userType, isLoggedIn }) => {
   const navigate = useNavigate();
 
   const setLecturer = () => {
-    setUserType("lecturer")
-    navigate('/login')
-  }
+    setUserType("lecturer");
+    navigate("/login");
+  };
   const setStudent = () => {
-    setUserType("student")
-    navigate('/login')
-  }
+    setUserType("student");
+    navigate("/login");
+  };
+  useEffect(() => {
+    console.log(userType);
+    if (isLoggedIn && userType == "student") {
+      navigate("/student/dashboard");
+    }
+    if (isLoggedIn && userType == "lecturer") {
+      navigate("/lecturer/dashboard");
+    }
+  }, []);
   return (
     <div className="main">
       <div className="login-container">
@@ -23,10 +31,10 @@ const UserType = ({ setUserType }) => {
           <h2>Select Your role</h2>
           <div className="flex-items">
             <button onClick={setStudent}>
-                <span>Student</span>
+              <span>Student</span>
             </button>
             <button onClick={setLecturer}>
-                <span>Lecturer</span>
+              <span>Lecturer</span>
             </button>
           </div>
         </div>
@@ -35,10 +43,21 @@ const UserType = ({ setUserType }) => {
   );
 };
 
+const mapStateToProps = (state) => {
+  return {
+    userType: state.user,
+    isLoggedIn: state.student.isLoggedIn
+      ? state.student.isLoggedIn
+      : state.lecturer.isLoggedIn,
+    lecturerErr: state.lecturer.error,
+    studentErr: state.student.error,
+  };
+};
+
 const mapDispatchToProps = (dispatch) => {
   return {
     setUserType: (user) => dispatch(setUserType(user)),
   };
 };
 
-export default connect(null, mapDispatchToProps)(UserType);
+export default connect(mapStateToProps, mapDispatchToProps)(UserType);

@@ -60,10 +60,10 @@ const Login = ({
   };
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isLoggedIn && userType == 'lecturer') {
       navigate("/lecturer/dashboard/");
     }
-  });
+  }, []);
 
   return (
     <div className="main">
