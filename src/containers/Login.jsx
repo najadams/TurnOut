@@ -49,7 +49,6 @@ const Login = ({
         }
       } else {
         await handleLecturerLogin(referenceId, password, navigate);
-        console.log(lecturerInfo);
         if (lecturerErr) {
           setError(lecturerErr);
         }
