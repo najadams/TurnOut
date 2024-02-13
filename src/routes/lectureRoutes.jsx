@@ -21,7 +21,7 @@ const LecturerRoutes = ({ userType, isLoggedIn }) => {
       <SideBar />
       <div className="main-content">
         <Routes>
-          <Route index element={<LectureDashboard />} />
+          <Route exact element={<LectureDashboard />} />
           <Route index path="/dashboard" element={<LectureDashboard />} />
           <Route path="/classes" element={<LecturerClasses />} />
           <Route path="/attendance" element={<LecturerAttendance />} />

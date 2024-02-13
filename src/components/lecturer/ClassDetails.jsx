@@ -6,15 +6,17 @@ import axios from "axios";
 
 const ClassDetails = () => {
   const { classId } = useParams();
-  const [classDetails, setClassDetails] = useState(null);
+  const [details, setDetails] = useState(null);
+  const [students, setStudents] = useState([]);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    console.log(classId);
     const fetchClassDetails = async () => {
       try {
-        const response = await axios.get(`${API_BASE_URL}/class/${classId}`);
-        setClassDetails(response.data); // Access response.data to get the actual data
+        const res = await axios.get(`${API_BASE_URL}/class/${classId}`);
+        const response = res.data;
+        console.log(response);
+        setDetails(response.data);
       } catch (error) {
         console.log(error.message);
         setError("Something went wrong");
@@ -22,14 +24,20 @@ const ClassDetails = () => {
     };
     fetchClassDetails();
   }, [classId]);
+
+  useEffect(() => {
+    console.log(details);
+    setStudents(details.students);
+    console.log(students);
+  }, [details]);
   return (
     <div>
       <h2 className="Page-name">Lecturer Dashboard</h2>
       <div>
         <h2>Class Details</h2>
-        {classDetails && (
+        {details && (
           <div>
-            <p>Class Name: {classDetails.name}</p>
+            <p>Class Name: {details.name}</p>
             {/* Add more details as needed */}
           </div>
         )}
