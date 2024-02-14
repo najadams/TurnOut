@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ExcelUploader from "../components/lecturer/ExcelUploader";
 import ClassDetails from "../components/lecturer/ClassDetails";
+import Welcome from "../components/lecturer/Welcome";
 
 const LecturerRoutes = ({ userType, isLoggedIn }) => {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ const LecturerRoutes = ({ userType, isLoggedIn }) => {
       <SideBar />
       <div className="main-content">
         <Routes>
-          <Route exact element={<LectureDashboard />} />
+          <Route path="/" element={<Welcome />} />
           <Route index path="/dashboard" element={<LectureDashboard />} />
           <Route path="/classes" element={<LecturerClasses />} />
           <Route path="/attendance" element={<LecturerAttendance />} />

@@ -5,7 +5,7 @@ import {
   fetchLecturerFailure,
   fetchLecturerRequest,
   loginLecturerSuccess,
-  logoutLecturer,
+  // logoutLecturer,
   setLecturerData,
 } from "../actions/lecturers/lecturerActions";
 import { connect } from "react-redux";
@@ -15,7 +15,7 @@ import {
   fetchStudentRequest,
   fetchStudentSuccess,
   loginStudentSuccess,
-  logoutStudent,
+  // logoutStudent,
 } from "../actions/students/studentActions";
 
 const Login = ({

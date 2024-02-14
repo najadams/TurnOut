@@ -36,9 +36,16 @@
   gap: 5px;
 }
 
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .fcard {
   width: auto;
-  height: auto;
+  /* height: auto; */
+  height: 100%;
   box-shadow: 5px black;
   background-color: #fffff3;
   border-radius: 20px;
@@ -70,4 +77,8 @@
 }
 .card:hover {
   transform: scale(1.1);
+}
+
+.main-content {
+  width: 100%;
 }

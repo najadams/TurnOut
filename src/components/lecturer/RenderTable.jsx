@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./RenderTable.css";
 import { API_BASE_URL } from "../../containers";
+import Loader from "../common/Loader/Loader";
 
 const RenderTable = ({ data, tableName }) => {
   const [column, setColumn] = useState([]);
@@ -25,7 +26,8 @@ const RenderTable = ({ data, tableName }) => {
         </section>
         <section className="table__body">
           {loading ? (
-            <p>Loading...</p>
+            // <p>Loading...</p>
+            <Loader />
           ) : (
             <table>
               <thead>

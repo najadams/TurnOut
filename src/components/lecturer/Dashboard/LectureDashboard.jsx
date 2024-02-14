@@ -3,9 +3,11 @@ import { API_BASE_URL } from "../../../containers";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import Welcome from "../Welcome";
 
 const LecturerDashboard = () => {
   const [classes, setClasses] = useState([]);
+  const [loading, setLoading] = useState(true);
   const lecturerId = useSelector(
     (state) => state.lecturer.lecturerInfo.user._id
   );
@@ -19,6 +21,7 @@ const LecturerDashboard = () => {
         });
         // Access data directly from the response
         setClasses(response.data.data);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching classes:", error);
       }
@@ -26,6 +29,13 @@ const LecturerDashboard = () => {
 
     fetchClasses(lecturerId);
   }, [lecturerId]);
+  if (loading) {
+    return (
+      <div style={{ height: "88vh" }}>
+        <Welcome />
+      </div>
+    );
+  }
 
   return (
     <div>

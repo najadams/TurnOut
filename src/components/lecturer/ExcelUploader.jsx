@@ -70,37 +70,37 @@ const ExcelUploader = () => {
     }
   };
 
-   const createClass = async (e) => {
-     e.preventDefault();
+  const createClass = async (e) => {
+    e.preventDefault();
 
-     setLoading(true);
-     try {
-       if (!excelData) {
-         setError("Please upload an Excel file first.");
-         return;
-       }
+    setLoading(true);
+    try {
+      if (!excelData) {
+        setError("Please upload an Excel file first.");
+        return;
+      }
 
-       const collectionData = {
-         ClassName: name,
-         lecturerId: lecturerInfo._id,
-         headers: excelData.headers,
-         rows: excelData.rows,
-       };
+      const collectionData = {
+        ClassName: name,
+        lecturerId: lecturerInfo._id,
+        headers: excelData.headers,
+        rows: excelData.rows,
+      };
 
-       const response = await axios.post(
-         `${API_BASE_URL}/createMongoCollection`,
-         collectionData
-       );
+      const response = await axios.post(
+        `${API_BASE_URL}/createMongoCollection`,
+        collectionData
+      );
 
-       console.log(response.data);
-       setError("");
-       setCompleted(true);
-     } catch (error) {
-       setError(error.message);
-     } finally {
-       setLoading(false);
-     }
-   };
+      console.log(response.data);
+      setError("");
+      setCompleted(true);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
@@ -146,7 +146,7 @@ const ExcelUploader = () => {
           )}
         </form>
       ) : (
-        <div>
+        <div style={dropzoneStyles}>
           <h3>{name} created successfully </h3>
           <button onClick={() => navigate("/lecturer/dashboard")}>
             <span>DashBoard</span>
@@ -160,7 +160,7 @@ const ExcelUploader = () => {
 const dropzoneStyles = {
   border: "2px dashed #cccccc",
   borderRadius: "4px",
-  padding: "20px",
+  padding: "120px",
   textAlign: "center",
   cursor: "pointer",
 };
