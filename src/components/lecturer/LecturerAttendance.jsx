@@ -39,7 +39,7 @@ const LecturerAttendance = () => {
 
   return (
     <div>
-      <h2 className="Page-name">Lecturer Dashboard</h2>
+      <h2 className="Page-name">Take Attendance</h2>
       <div>
         <h2 style={{ paddingBottom: 50 }}>Your Classes</h2>
         <ul className="dashboard-list">
