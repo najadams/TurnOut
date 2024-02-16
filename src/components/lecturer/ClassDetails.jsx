@@ -5,6 +5,7 @@ import axios from "axios";
 import { API_BASE_URL } from "../../containers";
 import RenderTable from "./RenderTable";
 import Welcome from "./Welcome";
+
 const ClassDetails = () => {
   const { classId } = useParams();
   const [details, setDetails] = useState(null);
