@@ -1,9 +1,60 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
+import { API_BASE_URL } from "../../containers";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import Welcome from "./Welcome";
 
 const LecturerAttendance = () => {
-  return (
-    <div>LecturerAttendance</div>
-  )
-}
+  const [classes, setClasses] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const lecturerId = useSelector(
+    (state) => state.lecturer.lecturerInfo.user._id
+  );
 
-export default LecturerAttendance
+  useEffect(() => {
+    const fetchClasses = async (lecturerId) => {
+      try {
+        // Use axios to send a POST request with the lecturerId
+        const response = await axios.post(`${API_BASE_URL}/classes`, {
+          lecturerId,
+        });
+        // Access data directly from the response
+        setClasses(response.data.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching classes:", error);
+      }
+    };
+
+    fetchClasses(lecturerId);
+  }, [lecturerId]);
+  if (loading) {
+    return (
+      <div style={{ height: "88vh" }}>
+        <Welcome />
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <h2 className="Page-name">Lecturer Dashboard</h2>
+      <div>
+        <h2 style={{ paddingBottom: 50 }}>Your Classes</h2>
+        <ul className="dashboard-list">
+          {classes.map((cls) => (
+            <Link
+              style={{ textDecoration: "none" }}
+              key={cls._id}
+              to={`${cls._id}`}>
+              <li className="login-form card">{cls.name}</li>
+            </Link>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+};
+
+export default LecturerAttendance;

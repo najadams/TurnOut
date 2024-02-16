@@ -7,12 +7,12 @@ import Welcome from "../Welcome";
 
 const LecturerDashboard = () => {
   const [classes, setClasses] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);// dont forget to change
   const lecturerId = useSelector(
     (state) => state.lecturer.lecturerInfo.user._id
   );
 
-  useEffect(() => {
+  useEffect(() => { 
     const fetchClasses = async (lecturerId) => {
       try {
         // Use axios to send a POST request with the lecturerId
