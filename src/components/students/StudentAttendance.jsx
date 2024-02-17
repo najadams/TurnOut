@@ -1,13 +1,20 @@
-/**
- * this page renders all the classes the student has missed
- */
-
-import React from 'react'
+import React from "react";
+import { useParams } from "react-router-dom";
 
 const StudentAttendance = () => {
+  const { classname } = useParams();
   return (
-    <div>StudentAttendance</div>
-  )
-}
+    <div>
+      <h2 className="Page-name">Take Attendance</h2>
+      <div>
+        <h2>Class {classname}</h2>
+        <div className="main-content flex-">
 
-export default StudentAttendance
+        </div>
+        {/* {error && <h2 className="error-message">Something went wrong</h2>} */}
+      </div>
+    </div>
+  );
+};
+
+export default StudentAttendance;
