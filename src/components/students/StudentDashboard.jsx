@@ -33,16 +33,24 @@ const StudentDashboard = () => {
       <h2 className="Page-name">Student Dashboard</h2>
       <div>
         <h2 style={{ paddingBottom: 50 }}>Your Classes</h2>
-        <ul className="dashboard-list">
-          {classes.map((cls, index) => (
-            <Link
-              style={{ textDecoration: "none" }}
-              key={index}
-              to={`class/${cls}`}>
-              <li className="login-form card">{cls}</li>
-            </Link>
-          ))}
-        </ul>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            paddingLeft: 100,
+          }}>
+          <ul className="dashboard-list">
+            {classes.map((cls, index) => (
+              <Link
+                style={{ textDecoration: "none" }}
+                key={index}
+                to={`class/${cls}`}>
+                <li className="login-form card">{cls}</li>
+              </Link>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );
