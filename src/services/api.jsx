@@ -2,16 +2,18 @@ import { API_BASE_URL } from "../containers";
 import axios from "axios";
 
 // not sure if this is working yet
-const loginStudent = async (email, password) => {
+const loginStudent = async (studentId, firstname, lastname) => {
   try {
+    // console.log(firstname, lastname, studentId)
     const response = await fetch(`${API_BASE_URL}/login/student`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email,
-        password,
+        firstname,
+        lastname,
+        studentId,
       }),
     });
 
