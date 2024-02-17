@@ -16,7 +16,7 @@ const LecturerDashboard = () => {
     const fetchClasses = async (lecturerId) => {
       try {
         // Use axios to send a POST request with the lecturerId
-        const response = await axios.post(`${API_BASE_URL}/classes`, {
+        const response = await axios.post(`${API_BASE_URL}/lecturer/classes`, {
           lecturerId,
         });
         // Access data directly from the response
