@@ -41,7 +41,7 @@ const LecturerDashboard = () => {
     <div>
       <h2 className="Page-name">Lecturer Dashboard</h2>
       <div>
-        <h2 style={{ paddingBottom: 50 }}>Your Classes</h2>
+        <h2 className="page-detail">Your Classes</h2>
         <ul className="dashboard-list">
           {classes.map((cls) => (
             <Link
