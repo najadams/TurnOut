@@ -40,8 +40,8 @@ const StudentDashboard = () => {
             <Link
               style={{ textDecoration: "none" }}
               key={index}
-              to={`class/${cls}`}>
-              <li className="login-form card">{cls}</li>
+              to={`class/${cls._id}`}>
+              <li className="login-form card">{cls.name}</li>
             </Link>
           ))}
         </ul>

@@ -10,7 +10,7 @@ const StudentRoutes = () => {
     <Routes>
       <Route index  element={<StudentDashboard />} />
       <Route path="/profile" element={<StudentProfile />} />
-      <Route path="/class/:classname" element={<StudentAttendance />} />
+      <Route path="/class/:classId" element={<StudentAttendance />} />
     </Routes>
   );
 };
