@@ -7,12 +7,12 @@ import Welcome from "../Welcome";
 
 const LecturerDashboard = () => {
   const [classes, setClasses] = useState([]);
-  const [loading, setLoading] = useState(false);// dont forget to change
+  const [loading, setLoading] = useState(false); // dont forget to change
   const lecturerId = useSelector(
     (state) => state.lecturer.lecturerInfo.user._id
   );
 
-  useEffect(() => { 
+  useEffect(() => {
     const fetchClasses = async (lecturerId) => {
       try {
         // Use axios to send a POST request with the lecturerId
@@ -42,16 +42,18 @@ const LecturerDashboard = () => {
       <h2 className="Page-name">Lecturer Dashboard</h2>
       <div>
         <h2 className="page-detail">Your Classes</h2>
-        <ul className="dashboard-list">
-          {classes.map((cls) => (
-            <Link
-              style={{ textDecoration: "none" }}
-              key={cls._id}
-              to={`class/${cls._id}`}>
-              <li className="login-form card">{cls.name}</li>
-            </Link>
-          ))}
-        </ul>
+        <div className="dashboard center">
+          <ul className="dashboard-list" style={{ width: "90%" }}>
+            {classes.map((cls) => (
+              <Link
+                style={{ textDecoration: "none" }}
+                key={cls._id}
+                to={`class/${cls._id}`}>
+                <li className="login-form card">{cls.name}</li>
+              </Link>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );
