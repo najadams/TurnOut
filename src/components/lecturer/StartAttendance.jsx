@@ -5,13 +5,14 @@ import { API_BASE_URL } from "../../containers";
 import RenderTable from "./RenderTable";
 import { useGeolocated } from "react-geolocated";
 import { useSelector } from "react-redux";
+import Welcome from "./Welcome";
 
 const AttendanceDetails = () => {
   const lecturerId = useSelector(
     (state) => state.lecturer.lecturerInfo.user._id
   );
   const { classId } = useParams();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [className, setClassName] = useState("");
   const [error, setError] = useState("");
   const [portalStatus, setPortalStatus] = useState(false);
@@ -45,18 +46,22 @@ const AttendanceDetails = () => {
     try {
       // open portal for attendance marking
       if (!portalStatus) {
+        setLoading(true);
         const res = await axios.post(
           `${API_BASE_URL}/api/classes/${classId}/open-portal`,
           {
             lecturerId: lecturerId,
           }
         );
+        setLoading(false);
         console.log(res);
       } else {
+        setLoading(true);
         const res = await axios.post(
           `${API_BASE_URL}/api/classes/${classId}/close-portal`,
           { lecturerId: lecturerId }
         );
+        setLoading(false);
         console.log(res);
       }
       setPortalStatus((prevState) => !prevState);
@@ -80,10 +85,18 @@ const AttendanceDetails = () => {
     <div>
       <h2 className="Page-name">Mark Attendance </h2>
       <div>
-        <h2>Start {className} attendance</h2>
-        <button onClick={handleAttendanceMarking}>
-          <span> {portalStatus ? "End" : "Start"}</span>
-        </button>
+        <h2>
+          <h1>{!portalStatus ? "Start" : "End"}</h1> {className} attendance
+        </h2>
+        {loading ? (
+          <div>
+            <Welcome />
+          </div>
+        ) : (
+          <button onClick={handleAttendanceMarking}>
+            <span> {!portalStatus ? "Start" : "End"}</span>
+          </button>
+        )}
         {error && <h2 className="error-message">Something went wrong</h2>}
       </div>
     </div>
