@@ -15,7 +15,7 @@ import {
   fetchStudentRequest,
   fetchStudentSuccess,
   loginStudentSuccess,
-  // logoutStudent,
+  logoutStudent,
 } from "../actions/students/studentActions";
 
 const Login = ({
@@ -30,8 +30,8 @@ const Login = ({
   const [referenceId, setReferenceId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [firstName, setFirstName] = useState("")
-  const [lastName, setLastName] = useState("")
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   // const [classCode, setClassCode] = useState("");
   const [signUp, setSignUp] = useState(false);
 
@@ -39,21 +39,21 @@ const Login = ({
     try {
       console.log(lecturerErr);
       if (userType == "student") {
-        console.log(firstName,  lastName, referenceId)
-         if (!referenceId || !firstName || !lastName) {
-           setError("Please fill in all fields");
-           return;
-         }
+        console.log(firstName, lastName, referenceId);
+        if (!referenceId || !firstName || !lastName) {
+          setError("Please fill in all fields");
+          return;
+        }
         await handleStudentLogin(referenceId, firstName, lastName, navigate);
         if (studentErr) {
           setError(studentErr);
           console.log(studentErr);
         }
       } else {
-         if (!referenceId || !password) {
-           setError("Please fill in all fields");
-           return;
-         }
+        if (!referenceId || !password) {
+          setError("Please fill in all fields");
+          return;
+        }
         await handleLecturerLogin(referenceId, password, navigate);
         if (lecturerErr) {
           setError(lecturerErr);
@@ -61,6 +61,7 @@ const Login = ({
       }
     } catch (error) {
       console.log(error);
+      setError(error);
     }
   };
 
@@ -177,7 +178,7 @@ const mapDispatchToProps = (dispatch) => {
       } catch (error) {
         dispatch(fetchStudentFailure(error.message));
         console.error("Login failed:", error.message);
-        // dispatch(logoutStudent());
+        dispatch(logoutStudent());
       }
     },
     handleLecturerLogin: async (email, password, navigate) => {
