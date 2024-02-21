@@ -57,6 +57,13 @@
   padding: 40px;
 }
 
+.status {
+  background-color: green;
+}
+.r {
+  background-color: red;
+}
+
 .dashboard-list {
   display: flex;
   gap: 20px;

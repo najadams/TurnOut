@@ -45,7 +45,7 @@ button {
   height: 50px;
   border-radius: 10px;
   border: 1px solid #03045e;
-  background-color: #4caf50;
+  background-color: #9dd6db;
   position: relative;
   overflow: hidden;
   transition: all 0.5s ease-in;
@@ -68,7 +68,7 @@ button::after {
 
 button::before {
   left: -10px;
-  background: #240046;
+  background: #ae80d8;
 }
 
 button::after {
