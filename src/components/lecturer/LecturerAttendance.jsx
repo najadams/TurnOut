@@ -42,16 +42,18 @@ const LecturerAttendance = () => {
       <h2 className="Page-name">Take Attendance</h2>
       <div>
         <h2 style={{ paddingBottom: 50 }}>Your Classes</h2>
-        <ul className="dashboard-list">
-          {classes.map((cls) => (
-            <Link
-              style={{ textDecoration: "none" }}
-              key={cls._id}
-              to={`${cls._id}`}>
-              <li className="login-form card">{cls.name}</li>
-            </Link>
-          ))}
-        </ul>
+        <div className="dashboard center">
+          <ul className="dashboard-list" style={{ width: "90%" }}>
+            {classes.map((cls) => (
+              <Link
+                style={{ textDecoration: "none" }}
+                key={cls._id}
+                to={`${cls._id}`}>
+                <li className="login-form card">{cls.name}</li>
+              </Link>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );
