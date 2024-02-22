@@ -42,40 +42,36 @@ const AttendanceDetails = () => {
     fetchName();
   }, [classId]);
 
-  const handleAttendanceMarking = async () => {
+  const handleAttendanceMarking = () => {
     try {
-      // open portal for attendance marking
-      if (!portalStatus) {
-        setLoading(true);
-        const res = await axios.post(
-          `${API_BASE_URL}/api/classes/${classId}/open-portal`,
-          {
+      // Open or close portal for attendance marking
+      setLoading(true);
+      const portalEndpoint = portalStatus
+        ? `${API_BASE_URL}/api/classes/${classId}/close-portal`
+        : `${API_BASE_URL}/api/classes/${classId}/open-portal`;
+
+      setInterval(async () => {
+        await axios.post(portalEndpoint, { lecturerId: lecturerId });
+
+        // If opening the portal, send the lecturer's location to the server
+        if (!portalStatus && coords) {
+          await axios.post(`${API_BASE_URL}/lecturer/location`, {
             lecturerId: lecturerId,
-          }
-        );
-        setLoading(false);
-        console.log(res);
-      } else {
-        setLoading(true);
-        const res = await axios.post(
-          `${API_BASE_URL}/api/classes/${classId}/close-portal`,
-          { lecturerId: lecturerId }
-        );
-        setLoading(false);
-        console.log(res);
-      }
+            longitude: coords.longitude,
+            latitude: coords.latitude,
+          });
+        }
+      }, 15000); // Send location every 15 seconds
+
+      setLoading(false);
       setPortalStatus((prevState) => !prevState);
-      // Send location data and classId to the server
-      // await axios.post(`${API_BASE_URL}/attendance/mark`, {
-      //   classId: classId,
-      //   latitude: coords.latitude,
-      //   longitude: coords.longitude,
-      // });
     } catch (error) {
       console.log("Error marking attendance", error);
       setError("Error marking attendance");
     }
   };
+
+
 
   return !isGeolocationAvailable ? (
     <div>Your browser does not support Geolocation</div>
