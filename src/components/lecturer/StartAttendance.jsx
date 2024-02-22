@@ -6,6 +6,7 @@ import RenderTable from "./RenderTable";
 import { useGeolocated } from "react-geolocated";
 import { useSelector } from "react-redux";
 import Welcome from "./Welcome";
+import Loader from "../common/Loader/Loader";
 
 const AttendanceDetails = () => {
   const lecturerId = useSelector(
@@ -33,6 +34,11 @@ const AttendanceDetails = () => {
         );
         const name = response.data.class.name;
         setClassName(name);
+        const status = await axios.get(
+          `${API_BASE_URL}/api/classes/${classId}/portal-status`
+        );
+        console.log(status.data.portalStatus);
+        setPortalStatus(status.data.portalStatus === "open");
         setLoading(false);
       } catch (error) {
         console.log("Something went wrong", error);
@@ -42,27 +48,27 @@ const AttendanceDetails = () => {
     fetchName();
   }, [classId]);
 
-  const handleAttendanceMarking = () => {
+  const handleAttendanceMarking = async () => {
     try {
       // Open or close portal for attendance marking
       setLoading(true);
+      console.log(portalStatus);
       const portalEndpoint = portalStatus
         ? `${API_BASE_URL}/api/classes/${classId}/close-portal`
         : `${API_BASE_URL}/api/classes/${classId}/open-portal`;
-
-      setInterval(async () => {
-        await axios.post(portalEndpoint, { lecturerId: lecturerId });
-
-        // If opening the portal, send the lecturer's location to the server
-        if (!portalStatus && coords) {
-          await axios.post(`${API_BASE_URL}/lecturer/location`, {
-            lecturerId: lecturerId,
-            longitude: coords.longitude,
-            latitude: coords.latitude,
-          });
-        }
-      }, 15000); // Send location every 15 seconds
-
+      const coco = await axios.post(portalEndpoint, { lecturerId: lecturerId });
+      if (portalStatus) {
+        setInterval(async () => {
+          // If opening the portal, send the lecturer's location to the server
+          if (!portalStatus && coords) {
+            await axios.post(`${API_BASE_URL}/lecturer/location`, {
+              lecturerId: lecturerId,
+              longitude: coords.longitude,
+              latitude: coords.latitude,
+            });
+          }
+        }, 15000); // Send location every 15 seconds
+      }
       setLoading(false);
       setPortalStatus((prevState) => !prevState);
     } catch (error) {
@@ -70,8 +76,6 @@ const AttendanceDetails = () => {
       setError("Error marking attendance");
     }
   };
-
-
 
   return !isGeolocationAvailable ? (
     <div>Your browser does not support Geolocation</div>
@@ -81,12 +85,11 @@ const AttendanceDetails = () => {
     <div>
       <h2 className="Page-name">Mark Attendance </h2>
       <div>
-        <h2>
-          <h1>{!portalStatus ? "Start" : "End"}</h1> {className} attendance
-        </h2>
+        {!portalStatus ? <h1>Start</h1> : <h1>End</h1>}{" "}
+        <h2>{className} attendance</h2>
         {loading ? (
-          <div>
-            <Welcome />
+          <div style={{ width: "100%", height: "100%" }}>
+            <Loader />
           </div>
         ) : (
           <button onClick={handleAttendanceMarking}>
