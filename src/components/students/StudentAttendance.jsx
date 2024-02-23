@@ -11,18 +11,19 @@ const StudentAttendance = () => {
   const [loading, setLoading] = useState(true);
   const [name, setName] = useState("");
   const [portalStatus, setPortalStatus] = useState(false);
+  const [attendanceStatus, setAttendanceStatus] = useState(false);
+  const [location, setLocation] = useState(null);
 
   useEffect(() => {
+    // Fetch name of class and portal status for attendance
     const fetchData = async () => {
       try {
-        // Fetch class name
         const classResponse = await axios.get(
           `${API_BASE_URL}/class/name/${classId}`
         );
         const className = classResponse.data.class.name;
         setName(className);
 
-        // Fetch portal status
         const portalResponse = await axios.get(
           `${API_BASE_URL}/api/classes/${classId}/portal-status`
         );
@@ -36,7 +37,16 @@ const StudentAttendance = () => {
       }
     };
 
+    // Set up interval to check portal status every 5 seconds
+    const intervalId = setInterval(fetchData, 5000);
+
+    // Fetch data initially when the component mounts
     fetchData();
+
+    // Clean up interval when the component is unmounted
+    return () => {
+      clearInterval(intervalId);
+    };
   }, [classId, studentId]);
 
   const handleAttendance = async (e) => {
@@ -45,28 +55,43 @@ const StudentAttendance = () => {
     try {
       // Check if the portal is open before marking attendance
       if (portalStatus) {
-        const response = await axios.get(`${API_BASE_URL}/api/classes/${classId}/check`, {
-          studentId : studentId
-        })
-        // Check if the student has already marked attendance for the current day
+        // const ws = new WebSocket(`ws://${API_BASE_URL}/lecturer/location`);
+        // ws.onopen = () => {
+        //   console.log("connection established");
+        // };
+        // ws.on("message", (message) => {
+        //   // Handle location data received from WebSocket
+        //   const locationData = JSON.parse(message);
+        //   console.log("Location data received:", locationData);
+        //   // Add your logic to calculate the correct range
+        // });
 
-          if (response.data.attendanceAlreadyMarked) {
-            console.log("Attendance already marked for today");
-            // Handle the case when attendance is already marked for today
-          } else {
-        // Send a POST request to mark attendance
-        const markAttendanceResponse = await axios.post(
-          `${API_BASE_URL}/mark`,
-          {
-            studentId: studentId,
-            classId: classId,
-            status: "Present",
-          }
+        // Get data to check if the attendance has been marked
+        const response = await axios.post(
+          `${API_BASE_URL}/api/classes/${classId}/check`,
+          { studentId: studentId }
         );
+        console.log(response.data.attendanceMarked);
 
-        console.log(markAttendanceResponse.data); // Log the response if needed
+        // Check if the student has already marked attendance for the current day
+        if (response.data.attendanceMarked) {
+          console.log("Attendance Taken");
+          setAttendanceStatus(true);
+          // Here you can add the WebSocket logic to receive location data
+        } else {
+          // Send a POST request to mark attendance
+          const markAttendanceResponse = await axios.post(
+            `${API_BASE_URL}/mark`,
+            {
+              studentId: studentId,
+              classId: classId,
+              status: "Present",
+            }
+          );
 
-        // Handle any further logic based on the response
+          console.log(markAttendanceResponse.data); // Log the response if needed
+
+          // Handle any further logic based on the response
         }
       } else {
         console.log("Attendance portal is not open");
@@ -90,13 +115,20 @@ const StudentAttendance = () => {
               {portalStatus ? (
                 <div>
                   <div className="status attended">ONGOING</div>
-                  <button type="submit" onClick={handleAttendance}>
-                    <span>Take Attendance</span>
-                  </button>
+                  {attendanceStatus ? (
+                    <button type="submit" onClick={handleAttendance}>
+                      <span>Take Attendance</span>
+                    </button>
+                  ) : (
+                    <h4 style={{ paddingTop: 50 }}>
+                      Attendance marked already
+                    </h4>
+                  )}
                 </div>
               ) : (
                 <div className="status missed">INACTIVE</div>
               )}
+              {location && <div>longitude : {location.longitude}</div>}
             </h4>
           </div>
         </div>
