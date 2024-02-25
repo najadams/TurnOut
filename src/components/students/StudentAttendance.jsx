@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { API_BASE_URL } from "../../containers";
+import { API_BASE, API_BASE_URL } from "../../containers";
 
 const StudentAttendance = () => {
   const { classId } = useParams();
@@ -12,18 +12,20 @@ const StudentAttendance = () => {
   const [name, setName] = useState("");
   const [portalStatus, setPortalStatus] = useState(false);
   const [attendanceStatus, setAttendanceStatus] = useState(false);
-  const [location, setLocation] = useState(null);
+  const [location, setLocation] = useState({});
+  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
     // Fetch name of class and portal status for attendance
+    const fetchName = async () => {
+      const classResponse = await axios.get(
+        `${API_BASE_URL}/class/name/${classId}`
+      );
+      const className = classResponse.data.class.name;
+      setName(className);
+    };
     const fetchData = async () => {
       try {
-        const classResponse = await axios.get(
-          `${API_BASE_URL}/class/name/${classId}`
-        );
-        const className = classResponse.data.class.name;
-        setName(className);
-
         const portalResponse = await axios.get(
           `${API_BASE_URL}/api/classes/${classId}/portal-status`
         );
@@ -41,6 +43,7 @@ const StudentAttendance = () => {
     const intervalId = setInterval(fetchData, 5000);
 
     // Fetch data initially when the component mounts
+    fetchName();
     fetchData();
 
     // Clean up interval when the component is unmounted
@@ -49,23 +52,37 @@ const StudentAttendance = () => {
     };
   }, [classId, studentId]);
 
+  // second useEffect to get the location of the lecturer
+  useEffect(() => {
+    // testing websocket connection
+    const ws = new WebSocket(`ws://${API_BASE}`);
+
+    // check for ws connection with server
+    ws.onopen = () => {
+      console.log("Connected to the server");
+    };
+
+    ws.onmessage = (event) => {
+      const data = event.data;
+      console.log(data);
+      setLocation(data);
+    };
+
+    ws.onclose = () => {
+      console.log("coco");
+    };
+
+    setSocket(ws);
+
+    // end of websocket snippet0
+  }, [location]);
+
   const handleAttendance = async (e) => {
     e.preventDefault();
 
     try {
       // Check if the portal is open before marking attendance
       if (portalStatus) {
-        // const ws = new WebSocket(`ws://${API_BASE_URL}/lecturer/location`);
-        // ws.onopen = () => {
-        //   console.log("connection established");
-        // };
-        // ws.on("message", (message) => {
-        //   // Handle location data received from WebSocket
-        //   const locationData = JSON.parse(message);
-        //   console.log("Location data received:", locationData);
-        //   // Add your logic to calculate the correct range
-        // });
-
         // Get data to check if the attendance has been marked
         const response = await axios.post(
           `${API_BASE_URL}/api/classes/${classId}/check`,
@@ -79,6 +96,8 @@ const StudentAttendance = () => {
           setAttendanceStatus(true);
           // Here you can add the WebSocket logic to receive location data
         } else {
+          // establish websocket connection to get the lecturers location
+
           // Send a POST request to mark attendance
           const markAttendanceResponse = await axios.post(
             `${API_BASE_URL}/mark`,
@@ -128,7 +147,7 @@ const StudentAttendance = () => {
               ) : (
                 <div className="status missed">INACTIVE</div>
               )}
-              {location && <div>longitude : {location.longitude}</div>}
+              {location && <div>longitude : {location["longitude"]}</div>}
             </h4>
           </div>
         </div>
