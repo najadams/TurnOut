@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { API_BASE, API_BASE_URL } from "../../containers";
+import { useGeolocated } from "react-geolocated";
 
 const StudentAttendance = () => {
   const { classId } = useParams();
@@ -12,10 +13,17 @@ const StudentAttendance = () => {
   const [name, setName] = useState("");
   const [portalStatus, setPortalStatus] = useState(false);
   const [attendanceStatus, setAttendanceStatus] = useState(false);
-  const [location, setLocation] = useState({});
+  const [location, setLocation] = useState();
   const [socket, setSocket] = useState(null);
+  const { coords, isGeolocationAvailable, isGeolocationEnabled } =
+    useGeolocated({
+      positionOptions: { enableHighAccuracy: true },
+      userDecisionTimeout: 10000,
+      watchPosition: true,
+    });
 
   useEffect(() => {
+    console.log(coords);
     // Fetch name of class and portal status for attendance
     const fetchName = async () => {
       const classResponse = await axios.get(
@@ -63,7 +71,7 @@ const StudentAttendance = () => {
     };
 
     ws.onmessage = (event) => {
-      const data = event.data;
+      const data = JSON.parse(event.data);
       console.log(data);
       setLocation(data);
     };
@@ -73,9 +81,7 @@ const StudentAttendance = () => {
     };
 
     setSocket(ws);
-
-    // end of websocket snippet0
-  }, [location]);
+  }, []);
 
   const handleAttendance = async (e) => {
     e.preventDefault();
@@ -96,8 +102,6 @@ const StudentAttendance = () => {
           setAttendanceStatus(true);
           // Here you can add the WebSocket logic to receive location data
         } else {
-          // establish websocket connection to get the lecturers location
-
           // Send a POST request to mark attendance
           const markAttendanceResponse = await axios.post(
             `${API_BASE_URL}/mark`,
@@ -116,13 +120,21 @@ const StudentAttendance = () => {
         console.log("Attendance portal is not open");
         // Handle the case when the portal is not open, e.g., show a message to the user
       }
+      if (socket) {
+        socket.close();
+        console.log("WebSocket connection closed");
+      }
     } catch (error) {
       console.error("Error handling attendance:", error);
       // Handle the error appropriately, e.g., show an error message to the user
     }
   };
 
-  return (
+  return !isGeolocationAvailable ? (
+    <div>Your browser does not support Geolocation</div>
+  ) : !isGeolocationEnabled ? (
+    <div>Geolocation is not enabled</div>
+  ) : (
     <div>
       <h2 className="Page-name">Take Attendance</h2>
       <div>
@@ -135,19 +147,24 @@ const StudentAttendance = () => {
                 <div>
                   <div className="status attended">ONGOING</div>
                   {attendanceStatus ? (
-                    <button type="submit" onClick={handleAttendance}>
-                      <span>Take Attendance</span>
-                    </button>
-                  ) : (
                     <h4 style={{ paddingTop: 50 }}>
                       Attendance marked already
                     </h4>
+                  ) : (
+                    <button type="submit" onClick={handleAttendance}>
+                      <span>Take Attendance</span>
+                    </button>
                   )}
                 </div>
               ) : (
                 <div className="status missed">INACTIVE</div>
               )}
-              {location && <div>longitude : {location["longitude"]}</div>}
+              {location && (
+                <div>
+                  <p>Longitude: {location.longitude}</p>
+                  <p>Latitude: {location.latitude}</p>
+                </div>
+              )}
             </h4>
           </div>
         </div>

@@ -52,16 +52,6 @@ const AttendanceDetails = () => {
   useEffect(() => {
     let intervalId;
 
-    const sendLocation = async () => {
-      if (portalStatus && coords) {
-        await axios.post(`${API_BASE_URL}/lecturer/location`, {
-          lecturerId,
-          longitude: coords.longitude,
-          latitude: coords.latitude,
-        });
-      }
-    };
-
    if (portalStatus) {
      intervalId = setInterval(() => {
        // Send location only if there's a change in coords
@@ -85,6 +75,16 @@ const AttendanceDetails = () => {
     };
   }, [portalStatus, coords, lecturerId]);
 
+   const sendLocation = async () => {
+     if (portalStatus && coords) {
+       await axios.post(`${API_BASE_URL}/lecturer/location`, {
+         lecturerId,
+         longitude: coords.longitude,
+         latitude: coords.latitude,
+       });
+     }
+   };
+
   const handleAttendanceMarking = async () => {
     try {
       setLoading(true);
@@ -93,6 +93,7 @@ const AttendanceDetails = () => {
         : `${API_BASE_URL}/api/classes/${classId}/open-portal`;
 
       await axios.post(portalEndpoint, { lecturerId });
+      sendLocation();
       setLoading(false);
       setPortalStatus((prevState) => !prevState);
     } catch (error) {
