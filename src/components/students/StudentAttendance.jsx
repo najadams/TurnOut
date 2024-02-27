@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { API_BASE, API_BASE_URL } from "../../containers";
+import { API_BASE, API_BASE_URL, Dlimit } from "../../containers";
 import { useGeolocated } from "react-geolocated";
+import getDistance from "geolib/es/getPreciseDistance";
 
 const StudentAttendance = () => {
   const { classId } = useParams();
@@ -22,9 +23,8 @@ const StudentAttendance = () => {
       watchPosition: true,
     });
 
+  // Fetch name of class and portal status for attendance
   useEffect(() => {
-    console.log(coords);
-    // Fetch name of class and portal status for attendance
     const fetchName = async () => {
       const classResponse = await axios.get(
         `${API_BASE_URL}/class/name/${classId}`
@@ -60,33 +60,60 @@ const StudentAttendance = () => {
     };
   }, [classId, studentId]);
 
-  // second useEffect to get the location of the lecturer
+  // second useEffect to establish websocket connection
   useEffect(() => {
-    // testing websocket connection
     const ws = new WebSocket(`ws://${API_BASE}`);
 
-    // check for ws connection with server
     ws.onopen = () => {
       console.log("Connected to the server");
+      // const intervalId = setInterval(() => {
+      //   if (location) {
+      //     console.log(location);
+      //   } else {
+      //     console.log("Location is undefined");
+      //   }
+      // }, 5000);
+
+      // return () => clearInterval(intervalId);
     };
 
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      console.log(data);
       setLocation(data);
+      // console.log(data);
+      ws.close();
     };
 
     ws.onclose = () => {
-      console.log("coco");
+      console.log("WebSocket connection closed");
     };
 
     setSocket(ws);
   }, []);
 
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     console.log(location)
+  //   }, 5000);
+
+  //   return () => clearInterval(interval)
+  // }, [location])
+
+  const calcDistance = (point1, point2) => {
+    if (point1 && point2) {
+      const distance = getDistance(point1, point2);
+      return distance < Number(`${Dlimit}`) ? true : false;
+    } else {
+      console.error("One or both coordinates are undefined");
+    }
+  };
   const handleAttendance = async (e) => {
     e.preventDefault();
 
     try {
+      const studentLocation = {longitude : coords.longitude, latitude : coords.latitude}
+      const closedtoLecturer = calcDistance(location, studentLocation);
+      console.log(closedtoLecturer);
       // Check if the portal is open before marking attendance
       if (portalStatus) {
         // Get data to check if the attendance has been marked
@@ -94,7 +121,7 @@ const StudentAttendance = () => {
           `${API_BASE_URL}/api/classes/${classId}/check`,
           { studentId: studentId }
         );
-        console.log(response.data.attendanceMarked);
+        // console.log(response.data.attendanceMarked);
 
         // Check if the student has already marked attendance for the current day
         if (response.data.attendanceMarked) {
@@ -134,7 +161,7 @@ const StudentAttendance = () => {
     <div>Your browser does not support Geolocation</div>
   ) : !isGeolocationEnabled ? (
     <div>Geolocation is not enabled</div>
-  ) : (
+  ) : coords ? (
     <div>
       <h2 className="Page-name">Take Attendance</h2>
       <div>
@@ -161,8 +188,10 @@ const StudentAttendance = () => {
               )}
               {location && (
                 <div>
-                  <p>Longitude: {location.longitude}</p>
+                  <p>lect: {location.longitude}</p>
                   <p>Latitude: {location.latitude}</p>
+                  <p>student: {coords.longitude}</p>
+                  <p>Latitude: {coords.latitude}</p>
                 </div>
               )}
             </h4>
@@ -171,6 +200,8 @@ const StudentAttendance = () => {
         {error && <h2 className="error-message">{error}</h2>}
       </div>
     </div>
+  ) : (
+    <div>Getting the location data&hellip;</div>
   );
 };
 

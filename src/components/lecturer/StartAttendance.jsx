@@ -112,7 +112,9 @@ const AttendanceDetails = () => {
       <h2 className="Page-name">Mark Attendance</h2>
       <div>
         {!portalStatus ? <h1>Start</h1> : <h1>End</h1>}
-        <h2>{className} attendance</h2>
+            <h2>{className} attendance
+              {coords.longitude}
+            </h2>
         {loading ? (
           <div style={{ width: "100%", height: "100%" }}>
             <Loader />
