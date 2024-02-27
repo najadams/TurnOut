@@ -44,6 +44,8 @@ const SideBar = ({ logout }) => {
 
       <div className="menu-bar">
         <div className="menu">
+
+          <ul className="menu-links">
           <li className="search-box">
             <i className="bx bx-search-alt icon"></i>
             <input
@@ -52,8 +54,6 @@ const SideBar = ({ logout }) => {
               placeholder="Search..."
             />
           </li>
-
-          <ul className="menu-links">
             <li className="nav-link">
               <NavLink to={"/lecturer/dashboard"} activeclassname="active">
                 <i className="bx bxs-home icon"></i>
