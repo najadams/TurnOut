@@ -4,10 +4,11 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import Welcome from "../Welcome";
+import Loader from "../../common/Loader/Loader";
 
 const LecturerDashboard = () => {
   const [classes, setClasses] = useState([]);
-  const [loading, setLoading] = useState(false); // dont forget to change
+  const [loading, setLoading] = useState(true); // dont forget to change
   const lecturerId = useSelector(
     (state) => state.lecturer.lecturerInfo.user._id
   );
@@ -31,8 +32,8 @@ const LecturerDashboard = () => {
   }, [lecturerId]);
   if (loading) {
     return (
-      <div style={{ height: "88vh" }}>
-        <Welcome />
+      <div className="center " style={{ height: "100%" }}>
+        <Loader />
       </div>
     );
   }

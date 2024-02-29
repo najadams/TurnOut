@@ -3,7 +3,7 @@ import { API_BASE_URL } from "../../containers";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import Welcome from "./Welcome";
+import Loader from "../common/Loader/Loader";
 
 const LecturerAttendance = () => {
   const [classes, setClasses] = useState([]);
@@ -31,8 +31,8 @@ const LecturerAttendance = () => {
   }, [lecturerId]);
   if (loading) {
     return (
-      <div style={{ height: "88vh" }}>
-        <Welcome />
+      <div className="center " style={{ height: "100%" }}>
+        <Loader />
       </div>
     );
   }

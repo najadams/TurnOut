@@ -52,20 +52,20 @@ const AttendanceDetails = () => {
   useEffect(() => {
     let intervalId;
 
-   if (portalStatus) {
-     intervalId = setInterval(() => {
-       // Send location only if there's a change in coords
-      //  if (
-      //    coords &&
-      //    (!prevCoords.current ||
-      //      coords.latitude !== prevCoords.current.latitude ||
-      //      coords.longitude !== prevCoords.current.longitude)
-      //  ) {
-         sendLocation();
+    if (portalStatus) {
+      intervalId = setInterval(() => {
+        // Send location only if there's a change in coords
+        //  if (
+        //    coords &&
+        //    (!prevCoords.current ||
+        //      coords.latitude !== prevCoords.current.latitude ||
+        //      coords.longitude !== prevCoords.current.longitude)
+        //  ) {
+        sendLocation();
         //  prevCoords.current = coords; // Update previous coords
-      //  }
-     }, 15000);
-   }
+        //  }
+      }, 15000);
+    }
 
     return () => {
       // Clear the interval when the component unmounts
@@ -75,15 +75,15 @@ const AttendanceDetails = () => {
     };
   }, [portalStatus, coords, lecturerId]);
 
-   const sendLocation = async () => {
-     if (portalStatus && coords) {
-       await axios.post(`${API_BASE_URL}/lecturer/location`, {
-         lecturerId,
-         longitude: coords.longitude,
-         latitude: coords.latitude,
-       });
-     }
-   };
+  const sendLocation = async () => {
+    if (portalStatus && coords) {
+      await axios.post(`${API_BASE_URL}/lecturer/location`, {
+        lecturerId,
+        longitude: coords.longitude,
+        latitude: coords.latitude,
+      });
+    }
+  };
 
   const handleAttendanceMarking = async () => {
     try {
@@ -112,9 +112,10 @@ const AttendanceDetails = () => {
       <h2 className="Page-name">Mark Attendance</h2>
       <div>
         {!portalStatus ? <h1>Start</h1> : <h1>End</h1>}
-            <h2>{className} attendance
-              {coords.longitude}
-            </h2>
+        <h2>
+          {className} attendance
+          {coords.longitude}
+        </h2>
         {loading ? (
           <div style={{ width: "100%", height: "100%" }}>
             <Loader />
@@ -128,7 +129,10 @@ const AttendanceDetails = () => {
       </div>
     </div>
   ) : (
-    <div>Getting the location data&hellip;</div>
+    <div className="center " style={{ height: "100%" }}>
+      <div>Getting the location data&hellip;</div>
+      <Loader />
+    </div>
   );
 };
 

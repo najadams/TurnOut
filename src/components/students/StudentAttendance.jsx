@@ -89,7 +89,28 @@ const StudentAttendance = () => {
     };
 
     setSocket(ws);
-  }, []);
+
+    // Check if the portal is open before marking attendance
+    const checkAttendanceStatus = async () => {
+      if (portalStatus) {
+        // Get data to check if the attendance has been marked
+        const response = await axios.post(
+          `${API_BASE_URL}/api/classes/${classId}/check`,
+          { studentId: studentId }
+        );
+        // console.log(response.data.attendanceMarked);
+
+        // Check if the student has already marked attendance for the current day
+        if (response.data.attendanceMarked) {
+          console.log("Attendance Taken");
+          setAttendanceStatus(true);
+          // Here you can add the WebSocket logic to receive location data
+        }
+      }
+    }
+
+    checkAttendanceStatus();
+  }, [portalStatus]);
 
   // useEffect(() => {
   //   const interval = setInterval(() => {
@@ -114,43 +135,19 @@ const StudentAttendance = () => {
       const studentLocation = {longitude : coords.longitude, latitude : coords.latitude}
       const closedtoLecturer = calcDistance(location, studentLocation);
       console.log(closedtoLecturer);
-      // Check if the portal is open before marking attendance
-      if (portalStatus) {
-        // Get data to check if the attendance has been marked
-        const response = await axios.post(
-          `${API_BASE_URL}/api/classes/${classId}/check`,
-          { studentId: studentId }
-        );
-        // console.log(response.data.attendanceMarked);
-
-        // Check if the student has already marked attendance for the current day
-        if (response.data.attendanceMarked) {
-          console.log("Attendance Taken");
-          setAttendanceStatus(true);
-          // Here you can add the WebSocket logic to receive location data
-        } else {
-          // Send a POST request to mark attendance
-          const markAttendanceResponse = await axios.post(
-            `${API_BASE_URL}/mark`,
-            {
-              studentId: studentId,
-              classId: classId,
-              status: "Present",
-            }
-          );
-
-          console.log(markAttendanceResponse.data); // Log the response if needed
-
-          // Handle any further logic based on the response
+      // Send a POST request to mark attendance
+      const markAttendanceResponse = await axios.post(
+        `${API_BASE_URL}/mark`,
+        {
+          studentId: studentId,
+          classId: classId,
+          status: "Present",
         }
-      } else {
-        console.log("Attendance portal is not open");
-        // Handle the case when the portal is not open, e.g., show a message to the user
-      }
-      if (socket) {
-        socket.close();
-        console.log("WebSocket connection closed");
-      }
+      );
+
+      console.log(markAttendanceResponse.data); // Log the response if needed
+
+      // Handle any further logic based on the response
     } catch (error) {
       console.error("Error handling attendance:", error);
       // Handle the error appropriately, e.g., show an error message to the user
@@ -175,7 +172,7 @@ const StudentAttendance = () => {
                   <div className="status attended">ONGOING</div>
                   {attendanceStatus ? (
                     <h4 style={{ paddingTop: 50 }}>
-                      Attendance marked already
+                      Attendance marked 
                     </h4>
                   ) : (
                     <button type="submit" onClick={handleAttendance}>
