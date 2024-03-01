@@ -32,6 +32,18 @@ const StudentAttendance = () => {
       );
       const className = classResponse.data.class.name;
       setName(className);
+      const response = await axios.post(
+        `${API_BASE_URL}/api/classes/${classId}/check`,
+        { studentId: studentId }
+      );
+      console.log(response.data.attendanceMarked);
+      console.log("let ther be a check");
+
+      // Check if the student has already marked attendance for the current day
+      if (response.data.attendanceMarked) {
+        console.log("Attendance Taken");
+        setAttendanceStatus(true);
+      }
     };
     const fetchData = async () => {
       try {
@@ -91,38 +103,21 @@ const StudentAttendance = () => {
   //   setSocket(ws);
 
   //   // Check if the portal is open before marking attendance
-  //   const checkAttendanceStatus = async () => {
-  //     if (portalStatus) {
-  //       // Get data to check if the attendance has been marked
-  //       const response = await axios.post(
-  //         `${API_BASE_URL}/api/classes/${classId}/check`,
-  //         { studentId: studentId }
-  //       );
-  //       // console.log(response.data.attendanceMarked);
-
-  //       // Check if the student has already marked attendance for the current day
-  //       if (response.data.attendanceMarked) {
-  //         console.log("Attendance Taken");
-  //         setAttendanceStatus(true);
-  //         // Here you can add the WebSocket logic to receive location data
-  //       }
-  //     }
-  //   }
 
   //   checkAttendanceStatus();
   // }, [portalStatus]);
 
   useEffect(() => {
+    const getLecturerLocation = async () => {
+      const lecturerLocation = await axios.get(
+        `${API_BASE_URL}/lecturer/location/${classId}`
+      );
+      // console.log(lecturerLocation.data.location);
+      // console.log(studentLocation);
+      console.log("first");
+      setLocation(lecturerLocation.data.location);
+    };
 
-     const getLecturerLocation = async () => {
-       const lecturerLocation = await axios.get(
-         `${API_BASE_URL}/lecturer/location/${classId}`
-       );
-       console.log(lecturerLocation.data.location);
-       console.log("first");
-       setLocation(lecturerLocation.data.location);
-     };
-    
     const interval = setInterval(() => {
       // console.log(location);
       getLecturerLocation();
@@ -148,7 +143,7 @@ const StudentAttendance = () => {
         latitude: coords.latitude,
       };
       const closedtoLecturer = calcDistance(location, studentLocation);
-      console.log(closedtoLecturer);
+      // console.log(closedtoLecturer);
       // Send a POST request to mark attendance
       const markAttendanceResponse = await axios.post(`${API_BASE_URL}/mark`, {
         studentId: studentId,
@@ -168,7 +163,7 @@ const StudentAttendance = () => {
   return !isGeolocationAvailable ? (
     <div>Your browser does not support Geolocation</div>
   ) : !isGeolocationEnabled ? (
-    <div>Geolocation is not enabled</div>
+    <div>Please check your Network and try again</div>
   ) : coords ? (
     <div>
       <h2 className="Page-name">Take Attendance</h2>
@@ -178,7 +173,7 @@ const StudentAttendance = () => {
           <div className="login-form">
             <h3 className="page-detail">Attendance Status</h3>
             <h4>
-              {portalStatus ? (
+              {portalStatus && location ? (
                 <div>
                   <div className="status attended">ONGOING</div>
                   {attendanceStatus ? (
