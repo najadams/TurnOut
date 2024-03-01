@@ -109,7 +109,7 @@ const AttendanceDetails = () => {
   return !isGeolocationAvailable ? (
     <div>Your browser does not support Geolocation</div>
   ) : !isGeolocationEnabled ? (
-    <div>Geolocation is not enabled</div>
+    <div>Please check your Network and try again</div>
   ) : coords ? (
     <div>
       <h2 className="Page-name">Mark Attendance</h2>
