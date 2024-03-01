@@ -14,6 +14,7 @@ const StudentAttendance = () => {
   const [name, setName] = useState("");
   const [portalStatus, setPortalStatus] = useState(false);
   const [attendanceStatus, setAttendanceStatus] = useState(false);
+  const [lecctureId, setLecturerId] = useState();
   const [location, setLocation] = useState();
   const [socket, setSocket] = useState(null);
   const { coords, isGeolocationAvailable, isGeolocationEnabled } =
@@ -53,7 +54,6 @@ const StudentAttendance = () => {
     // Fetch data initially when the component mounts
     fetchName();
     fetchData();
-
     // Clean up interval when the component is unmounted
     return () => {
       clearInterval(intervalId);
@@ -61,64 +61,75 @@ const StudentAttendance = () => {
   }, [classId, studentId]);
 
   // second useEffect to establish websocket connection
-  useEffect(() => {
-    const ws = new WebSocket(`ws://${API_BASE}`);
-
-    ws.onopen = () => {
-      console.log("Connected to the server");
-      // const intervalId = setInterval(() => {
-      //   if (location) {
-      //     console.log(location);
-      //   } else {
-      //     console.log("Location is undefined");
-      //   }
-      // }, 5000);
-
-      // return () => clearInterval(intervalId);
-    };
-
-    ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      setLocation(data);
-      // console.log(data);
-      ws.close();
-    };
-
-    ws.onclose = () => {
-      console.log("WebSocket connection closed");
-    };
-
-    setSocket(ws);
-
-    // Check if the portal is open before marking attendance
-    const checkAttendanceStatus = async () => {
-      if (portalStatus) {
-        // Get data to check if the attendance has been marked
-        const response = await axios.post(
-          `${API_BASE_URL}/api/classes/${classId}/check`,
-          { studentId: studentId }
-        );
-        // console.log(response.data.attendanceMarked);
-
-        // Check if the student has already marked attendance for the current day
-        if (response.data.attendanceMarked) {
-          console.log("Attendance Taken");
-          setAttendanceStatus(true);
-          // Here you can add the WebSocket logic to receive location data
-        }
-      }
-    }
-
-    checkAttendanceStatus();
-  }, [portalStatus]);
-
   // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     console.log(location)
-  //   }, 5000);
+  //   const ws = new WebSocket(`ws://${API_BASE}`);
 
-  //   return () => clearInterval(interval)
-  // }, [location])
+  //   ws.onopen = () => {
+  //     console.log("Connected to the server");
+  //     // const intervalId = setInterval(() => {
+  //     //   if (location) {
+  //     //     console.log(location);
+  //     //   } else {
+  //     //     console.log("Location is undefined");
+  //     //   }
+  //     // }, 5000);
+
+  //     // return () => clearInterval(intervalId);
+  //   };
+
+  //   ws.onmessage = (event) => {
+  //     const data = JSON.parse(event.data);
+  //     setLocation(data);
+  //     // console.log(data);
+  //     ws.close();
+  //   };
+
+  //   ws.onclose = () => {
+  //     console.log("WebSocket connection closed");
+  //   };
+
+  //   setSocket(ws);
+
+  //   // Check if the portal is open before marking attendance
+  //   const checkAttendanceStatus = async () => {
+  //     if (portalStatus) {
+  //       // Get data to check if the attendance has been marked
+  //       const response = await axios.post(
+  //         `${API_BASE_URL}/api/classes/${classId}/check`,
+  //         { studentId: studentId }
+  //       );
+  //       // console.log(response.data.attendanceMarked);
+
+  //       // Check if the student has already marked attendance for the current day
+  //       if (response.data.attendanceMarked) {
+  //         console.log("Attendance Taken");
+  //         setAttendanceStatus(true);
+  //         // Here you can add the WebSocket logic to receive location data
+  //       }
+  //     }
+  //   }
+
+  //   checkAttendanceStatus();
+  // }, [portalStatus]);
+
+  useEffect(() => {
+
+     const getLecturerLocation = async () => {
+       const lecturerLocation = await axios.get(
+         `${API_BASE_URL}/lecturer/location/${classId}`
+       );
+       console.log(lecturerLocation.data.location);
+       console.log("first");
+       setLocation(lecturerLocation.data.location);
+     };
+    
+    const interval = setInterval(() => {
+      // console.log(location);
+      getLecturerLocation();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [location]);
 
   const calcDistance = (point1, point2) => {
     if (point1 && point2) {
@@ -132,18 +143,18 @@ const StudentAttendance = () => {
     e.preventDefault();
 
     try {
-      const studentLocation = {longitude : coords.longitude, latitude : coords.latitude}
+      const studentLocation = {
+        longitude: coords.longitude,
+        latitude: coords.latitude,
+      };
       const closedtoLecturer = calcDistance(location, studentLocation);
       console.log(closedtoLecturer);
       // Send a POST request to mark attendance
-      const markAttendanceResponse = await axios.post(
-        `${API_BASE_URL}/mark`,
-        {
-          studentId: studentId,
-          classId: classId,
-          status: "Present",
-        }
-      );
+      const markAttendanceResponse = await axios.post(`${API_BASE_URL}/mark`, {
+        studentId: studentId,
+        classId: classId,
+        status: "Present",
+      });
 
       console.log(markAttendanceResponse.data); // Log the response if needed
 
@@ -171,9 +182,7 @@ const StudentAttendance = () => {
                 <div>
                   <div className="status attended">ONGOING</div>
                   {attendanceStatus ? (
-                    <h4 style={{ paddingTop: 50 }}>
-                      Attendance marked 
-                    </h4>
+                    <h4 style={{ paddingTop: 50 }}>Attendance marked</h4>
                   ) : (
                     <button type="submit" onClick={handleAttendance}>
                       <span>Take Attendance</span>

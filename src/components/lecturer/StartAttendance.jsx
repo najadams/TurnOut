@@ -7,6 +7,9 @@ import { useSelector } from "react-redux";
 import Loader from "../common/Loader/Loader";
 
 const AttendanceDetails = () => {
+  const referenceId = useSelector(
+    (state) => state.lecturer.lecturerInfo.user.referenceId
+  );
   const lecturerId = useSelector(
     (state) => state.lecturer.lecturerInfo.user._id
   );
@@ -73,12 +76,12 @@ const AttendanceDetails = () => {
         clearInterval(intervalId);
       }
     };
-  }, [portalStatus, coords, lecturerId]);
+  }, [portalStatus, coords, referenceId]);
 
   const sendLocation = async () => {
     if (portalStatus && coords) {
       await axios.post(`${API_BASE_URL}/lecturer/location`, {
-        lecturerId,
+        referenceId : referenceId,
         longitude: coords.longitude,
         latitude: coords.latitude,
       });
@@ -112,10 +115,7 @@ const AttendanceDetails = () => {
       <h2 className="Page-name">Mark Attendance</h2>
       <div>
         {!portalStatus ? <h1>Start</h1> : <h1>End</h1>}
-        <h2>
-          {className} attendance
-          {coords.longitude}
-        </h2>
+        <h2>{className} attendance</h2>
         {loading ? (
           <div style={{ width: "100%", height: "100%" }}>
             <Loader />
