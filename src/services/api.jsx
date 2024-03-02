@@ -1,29 +1,20 @@
 import { API_BASE_URL } from "../containers";
 import axios from "axios";
 
-// not sure if this is working yet
 const loginStudent = async (studentId, firstname, lastname) => {
   try {
-    // console.log(firstname, lastname, studentId)
-    const response = await fetch(`${API_BASE_URL}/login/student`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        firstname,
-        lastname,
-        studentId,
-      }),
+    const response = await axios.post(`${API_BASE_URL}/login/student`, {
+      firstname,
+      lastname,
+      studentId,
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
+    if (response.status !== 200) {
+      const errorData = response.data;
       throw new Error(errorData.message || "Login failed");
     }
 
-    const data = await response.json();
-    return data; // Return the response data if needed
+    return response.data; // Return the response data if needed
   } catch (error) {
     console.error("Error during login:", error.message);
     throw new Error("Login failed");
@@ -32,31 +23,23 @@ const loginStudent = async (studentId, firstname, lastname) => {
 
 const loginLecturer = async (referenceId, password) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/login/lecturer`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        referenceId,
-        password,
-      }),
+    const response = await axios.post(`${API_BASE_URL}/login/lecturer`, {
+      referenceId,
+      password,
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
+    if (response.status !== 200) {
+      const errorData = response.data;
       throw new Error(errorData.message || "Login failed");
     }
 
-    const data = await response.json();
-    return data;
+    return response.data;
   } catch (error) {
     console.error("Error during login:", error.message);
     throw new Error(error.message);
   }
 };
 
-// this is working
 const registerUser = async (userType, formData) => {
   const apiEndpoint =
     userType === "student"
@@ -70,23 +53,19 @@ const registerUser = async (userType, formData) => {
       },
     });
 
-    // Axios automatically throws an error for non-2xx responses
     const data = response.data;
     console.log(data);
     return data; // Return the response data if needed
   } catch (error) {
     if (error.response) {
-      // The request was made and the server responded with a non-2xx status
       console.error("Server responded with error:", error.response.data);
       throw new Error(error.response.data.message || "Registration failed");
     } else if (error.request) {
-      // The request was made but no response was received
       console.error("No response received from the server");
       throw new Error(
         "Registration failed. No response received from the server"
       );
     } else {
-      // Something happened in setting up the request that triggered an Error
       console.error("Error during registration:", error.message);
       throw new Error("Registration failed");
     }

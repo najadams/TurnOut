@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { API_BASE, API_BASE_URL, Dlimit } from "../../containers";
+import {  API_BASE_URL, Dlimit } from "../../containers";
 import { useGeolocated } from "react-geolocated";
 import getDistance from "geolib/es/getPreciseDistance";
 
