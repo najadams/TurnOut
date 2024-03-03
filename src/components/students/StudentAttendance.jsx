@@ -187,14 +187,6 @@ const StudentAttendance = () => {
               ) : (
                 <div className="status missed">INACTIVE</div>
               )}
-              {location && (
-                <div>
-                  <p>lect: {location.longitude}</p>
-                  <p>Latitude: {location.latitude}</p>
-                  <p>student: {coords.longitude}</p>
-                  <p>Latitude: {coords.latitude}</p>
-                </div>
-              )}
             </h4>
           </div>
         </div>
