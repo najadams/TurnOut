@@ -6,7 +6,8 @@
 
 main.table {
   width: 72vw;
-  height: 70vh;
+  /* height: 60vh; */
+  height: 100%;
   background-color: rgba(193, 188, 188, 0.333);
 
   backdrop-filter: blur(7px);
