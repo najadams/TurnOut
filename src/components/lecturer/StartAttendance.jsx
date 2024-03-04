@@ -5,6 +5,7 @@ import { API_BASE_URL } from "../../containers";
 import { useGeolocated } from "react-geolocated";
 import { useSelector } from "react-redux";
 import Loader from "../common/Loader/Loader";
+import RenderTable from "./RenderTable";
 
 const AttendanceDetails = () => {
   const referenceId = useSelector(
@@ -16,9 +17,12 @@ const AttendanceDetails = () => {
   const { classId } = useParams();
   const prevCoords = useRef(null);
   const [loading, setLoading] = useState(false);
+  const [students, setStudents] = useState();
   const [className, setClassName] = useState("");
   const [error, setError] = useState("");
   const [portalStatus, setPortalStatus] = useState(false);
+  const today = new Date();
+  const formattedDate = today.toISOString().split("T")[0];
   const { coords, isGeolocationAvailable, isGeolocationEnabled } =
     useGeolocated({
       positionOptions: { enableHighAccuracy: true },
@@ -53,6 +57,18 @@ const AttendanceDetails = () => {
   }, [classId]);
 
   useEffect(() => {
+    const getStudents = async () => {
+      try {
+        const data = await axios.get(
+          `${API_BASE_URL}/attendance/${classId}/${formattedDate}`
+        );
+        console.log(data.data);
+        setStudents(data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     let intervalId;
 
     if (portalStatus) {
@@ -65,9 +81,10 @@ const AttendanceDetails = () => {
         //      coords.longitude !== prevCoords.current.longitude)
         //  ) {
         sendLocation();
+        getStudents();
         //  prevCoords.current = coords; // Update previous coords
         //  }
-      }, 15000);
+      }, 10000);
     }
 
     return () => {
@@ -76,12 +93,12 @@ const AttendanceDetails = () => {
         clearInterval(intervalId);
       }
     };
-  }, [portalStatus, coords, referenceId]);
+  }, [portalStatus, coords, referenceId, students]);
 
   const sendLocation = async () => {
     if (portalStatus && coords) {
       await axios.post(`${API_BASE_URL}/lecturer/location`, {
-        referenceId : referenceId,
+        referenceId: referenceId,
         longitude: coords.longitude,
         latitude: coords.latitude,
       });
@@ -121,17 +138,27 @@ const AttendanceDetails = () => {
             <Loader />
           </div>
         ) : (
-          <button onClick={handleAttendanceMarking}>
-            <span> {!portalStatus ? "Start" : "End"}</span>
-          </button>
+          <div>
+            <button onClick={handleAttendanceMarking}>
+              <span> {!portalStatus ? "Start" : "End"}</span>
+            </button>
+
+            {students && portalStatus && (
+              <div>
+                <RenderTable data={students} tableName={"Present Students"} />
+              </div>
+            )}
+          </div>
         )}
         {error && <h2 className="error-message">{error}</h2>}
       </div>
     </div>
   ) : (
     <div className="center " style={{ height: "100%" }}>
+      <div>
+        <Loader />
+      </div>
       <div>Getting the location data&hellip;</div>
-      <Loader />
     </div>
   );
 };

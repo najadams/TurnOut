@@ -44,16 +44,15 @@ const SideBar = ({ logout }) => {
 
       <div className="menu-bar">
         <div className="menu">
-
           <ul className="menu-links">
-          <li className="search-box">
-            <i className="bx bx-search-alt icon"></i>
-            <input
-              type="search"
-              className="search-box"
-              placeholder="Search..."
-            />
-          </li>
+            <li className="search-box">
+              <i className="bx bx-search-alt icon"></i>
+              <input
+                type="search"
+                className="search-box"
+                placeholder="Search..."
+              />
+            </li>
             <li className="nav-link">
               <NavLink to={"/lecturer/dashboard"} activeclassname="active">
                 <i className="bx bxs-home icon"></i>
