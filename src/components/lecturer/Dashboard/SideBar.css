@@ -237,7 +237,7 @@ body.dark .switch::before {
 .main-content {
   flex-grow: 1;
   padding: 20px;
-  transition: margin-left 0.5s;
+  transition: margin-left 1s;
 }
 
 .sidebar.open ~ .main-content {
