@@ -5,7 +5,7 @@ import "./RenderTable.css";
 import { API_BASE_URL } from "../../containers";
 import Loader from "../common/Loader/Loader";
 
-const RenderTable = ({ data, tableName }) => {
+const RenderTable = ({ data, tableName, loadingState }) => {
   const [column, setColumn] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -26,8 +26,7 @@ const RenderTable = ({ data, tableName }) => {
         </section>
         <section className="table__body">
           {loading ? (
-            <h2>Loading...</h2>
-            // <Loader />
+            <h2>{loadingState}</h2>
           ) : (
             <table>
               <thead>

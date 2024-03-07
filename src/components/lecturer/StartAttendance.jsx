@@ -9,6 +9,7 @@ import Loader from "../common/Loader/Loader";
 import RenderTable from "./RenderTable";
 
 const AttendanceDetails = () => {
+  const [markingAttendance, setMarkingAttendance] = useState(false);
   const referenceId = useSelector(
     (state) => state.lecturer.lecturerInfo.user.referenceId
   );
@@ -69,7 +70,6 @@ const AttendanceDetails = () => {
     if (classDetails) {
       setPortalStatus(classDetails.portal);
       setClassName(classDetails.name);
-      console.log(classDetails);
     }
   }, [classDetails]);
 
@@ -103,6 +103,7 @@ const AttendanceDetails = () => {
 
   const handleAttendanceMarking = async () => {
     try {
+      setMarkingAttendance(true);
       const portalEndpoint = portalStatus
         ? `${API_BASE_URL}/api/classes/${classId}/close-portal`
         : `${API_BASE_URL}/api/classes/${classId}/open-portal`;
@@ -112,6 +113,8 @@ const AttendanceDetails = () => {
       setPortalStatus((prevState) => !prevState);
     } catch (error) {
       console.error("Error marking attendance", error);
+    } finally {
+      setMarkingAttendance(false);
     }
   };
 
@@ -137,7 +140,11 @@ const AttendanceDetails = () => {
 
             {students && portalStatus && (
               <div>
-                <RenderTable data={students} tableName={"Present Students"} />
+                <RenderTable
+                  data={students}
+                  tableName={"Present Students"}
+                  loadingState={"None"}
+                />
               </div>
             )}
           </div>
