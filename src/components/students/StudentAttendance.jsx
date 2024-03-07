@@ -2,21 +2,18 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import {  API_BASE_URL, Dlimit } from "../../containers";
+import { API_BASE_URL, Dlimit } from "../../containers";
 import { useGeolocated } from "react-geolocated";
 import getDistance from "geolib/es/getPreciseDistance";
+import { useQuery } from "react-query";
 
 const StudentAttendance = () => {
   const { classId } = useParams();
   const studentId = useSelector((state) => state.student.data.user._id);
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
   const [name, setName] = useState("");
-  const [portalStatus, setPortalStatus] = useState(false);
   const [attendanceStatus, setAttendanceStatus] = useState(false);
-  const [lecctureId, setLecturerId] = useState();
   const [location, setLocation] = useState();
-  const [socket, setSocket] = useState(null);
   const { coords, isGeolocationAvailable, isGeolocationEnabled } =
     useGeolocated({
       positionOptions: { enableHighAccuracy: true },
@@ -24,116 +21,75 @@ const StudentAttendance = () => {
       watchPosition: true,
     });
 
-  // Fetch name of class and portal status for attendance
-  useEffect(() => {
-    const fetchName = async () => {
-      const classResponse = await axios.get(
-        `${API_BASE_URL}/class/name/${classId}`
-      );
-      const className = classResponse.data.class.name;
-      setName(className);
-      const response = await axios.post(
-        `${API_BASE_URL}/api/classes/${classId}/check`,
-        { studentId: studentId }
-      );
-      console.log(response.data.attendanceMarked);
-      console.log("let ther be a check");
+  const {
+    data: portalStatusData,
+    isLoading: portalStatusLoading,
+    error: portalStatusError,
+  } = useQuery(["portalStatus", classId], async () => {
+    const response = await axios.get(
+      `${API_BASE_URL}/api/classes/${classId}/portal-status`
+    );
+    return response.data.portalStatus === "open";
+  });
 
-      // Check if the student has already marked attendance for the current day
-      if (response.data.attendanceMarked) {
-        console.log("Attendance Taken");
-        setAttendanceStatus(true);
-      }
-    };
-    const fetchData = async () => {
+  const {
+    data: classNameData,
+    isLoading: classNameLoading,
+    error: classNameError,
+  } = useQuery(["className", classId], async () => {
+    const response = await axios.get(`${API_BASE_URL}/class/name/${classId}`);
+    return response.data.class.name;
+  });
+
+  const {
+    data: lecturerLocationData,
+    isLoading: lecturerLocationLoading,
+    error: lecturerLocationError,
+  } = useQuery(["lecturerLocation", classId], async () => {
+    const response = await axios.get(
+      `${API_BASE_URL}/lecturer/location/${classId}`
+    );
+    return response.data.location;
+  });
+
+  useEffect(() => {
+    if (classNameData) {
+      setName(classNameData);
+    }
+  }, [classNameData]);
+
+  useEffect(() => {
+    const fetchAttendanceStatus = async () => {
       try {
-        const portalResponse = await axios.get(
-          `${API_BASE_URL}/api/classes/${classId}/portal-status`
+        const response = await axios.post(
+          `${API_BASE_URL}/api/classes/${classId}/check`,
+          {
+            studentId: studentId,
+          }
         );
-        const status = portalResponse.data.portalStatus;
-        setPortalStatus(status === "open");
 
-        setLoading(false);
+        if (response.data.attendanceMarked) {
+          setAttendanceStatus(true);
+        }
       } catch (error) {
-        console.log("Error fetching data:", error);
-        setError("Something went wrong");
+        console.error("Error fetching attendance status:", error);
+        setError("Error fetching attendance status");
       }
     };
 
-    // Set up interval to check portal status every 5 seconds
-    const intervalId = setInterval(fetchData, 5000);
-
-    // Fetch data initially when the component mounts
-    fetchName();
-    fetchData();
-    // Clean up interval when the component is unmounted
-    return () => {
-      clearInterval(intervalId);
-    };
+    fetchAttendanceStatus();
   }, [classId, studentId]);
-
-  // second useEffect to establish websocket connection
-  // useEffect(() => {
-  //   const ws = new WebSocket(`ws://${API_BASE}`);
-
-  //   ws.onopen = () => {
-  //     console.log("Connected to the server");
-  //     // const intervalId = setInterval(() => {
-  //     //   if (location) {
-  //     //     console.log(location);
-  //     //   } else {
-  //     //     console.log("Location is undefined");
-  //     //   }
-  //     // }, 5000);
-
-  //     // return () => clearInterval(intervalId);
-  //   };
-
-  //   ws.onmessage = (event) => {
-  //     const data = JSON.parse(event.data);
-  //     setLocation(data);
-  //     // console.log(data);
-  //     ws.close();
-  //   };
-
-  //   ws.onclose = () => {
-  //     console.log("WebSocket connection closed");
-  //   };
-
-  //   setSocket(ws);
-
-  //   // Check if the portal is open before marking attendance
-
-  //   checkAttendanceStatus();
-  // }, [portalStatus]);
-
-  useEffect(() => {
-    const getLecturerLocation = async () => {
-      const lecturerLocation = await axios.get(
-        `${API_BASE_URL}/lecturer/location/${classId}`
-      );
-      // console.log(lecturerLocation.data.location);
-      // console.log(studentLocation);
-      console.log("first");
-      setLocation(lecturerLocation.data.location);
-    };
-
-    const interval = setInterval(() => {
-      // console.log(location);
-      getLecturerLocation();
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [location]);
 
   const calcDistance = (point1, point2) => {
     if (point1 && point2) {
       const distance = getDistance(point1, point2);
-      return distance < Number(`${Dlimit}`) ? true : false;
+      return distance < Number(`${Dlimit}`);
     } else {
       console.error("One or both coordinates are undefined");
+      return false;
     }
   };
+
   const handleAttendance = async (e) => {
     e.preventDefault();
 
@@ -142,21 +98,21 @@ const StudentAttendance = () => {
         longitude: coords.longitude,
         latitude: coords.latitude,
       };
-      const closedtoLecturer = calcDistance(location, studentLocation);
-      // console.log(closedtoLecturer);
-      // Send a POST request to mark attendance
+
+      const closedToLecturer = calcDistance(location, studentLocation);
+
       const markAttendanceResponse = await axios.post(`${API_BASE_URL}/mark`, {
         studentId: studentId,
         classId: classId,
         status: "Present",
       });
 
-      console.log(markAttendanceResponse.data); // Log the response if needed
+      console.log(markAttendanceResponse.data);
 
       // Handle any further logic based on the response
     } catch (error) {
       console.error("Error handling attendance:", error);
-      // Handle the error appropriately, e.g., show an error message to the user
+      setError("Error handling attendance");
     }
   };
 
@@ -173,7 +129,7 @@ const StudentAttendance = () => {
           <div className="login-form">
             <h3 className="page-detail">Attendance Status</h3>
             <h4>
-              {portalStatus && location ? (
+              {portalStatusData && lecturerLocationData ? (
                 <div>
                   <div className="status attended">ONGOING</div>
                   {attendanceStatus ? (
