@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { API_BASE_URL } from "../../containers";
 import RenderTable from "./RenderTable";
-import Welcome from "./Welcome";
+import Loader from "../common/Loader/Loader";
 
 const ClassDetails = () => {
   const { classId } = useParams();
@@ -31,13 +31,19 @@ const ClassDetails = () => {
     fetchClassDetails();
   }, [classId]);
 
-   if (loading) {
-     return (
-       <div style={{ height: "88vh" }}>
-         <Welcome />
-       </div>
-     );
-   }
+  if (loading) {
+    return (
+      <div
+        style={{
+          height: "88vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}>
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <div>
