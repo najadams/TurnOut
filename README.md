@@ -1,8 +1,11 @@
-# React + Vite
+# React Attendance App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Introduction
+Welcome to the React Attendance App! This web application simplifies the process of tracking attendance for various events or classes. Built with React, it offers a user-friendly interface and seamless experience.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
+- **User Authentication**: Secure login and registration system.
+- **Real-time Updates**: Attendees can check in with immediate synchronization.
+- **Responsive Design**: Compatible with both desktop and mobile devices.
+- **Data Visualization**: Attendance statistics displayed through charts and graphs.
+- **Export Options**: Ability to export attendance data in CSV format.
