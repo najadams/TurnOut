@@ -9,25 +9,29 @@ import StudentRoutes from "./routes/studentRoutes";
 import LecturerRoutes from "./routes/lectureRoutes";
 import UserType from "./containers/UserType";
 import { PersistGate } from "redux-persist/integration/react";
+import { QueryClientProvider, QueryClient } from "react-query";
 import { persistor } from "./store/configureStore";
 
 function App() {
+  const queryClient = new QueryClient();
   return (
-    <Router>
-      <div className="App">
-      <Header />
-        <PersistGate persistor={persistor}>
-          <Routes>
-            <Route index to={"/"} element={<UserType />} />
-            <Route path={"/login"} element={<Login />} />
-            <Route path={"/register"} element={<Register />} />
-            <Route path={"/student/*"} element={<StudentRoutes />} />
-            <Route path={"/lecturer/*"} element={<LecturerRoutes />} />
-          </Routes>
-        </PersistGate>
-      {/* <Footer /> */}
-      </div>
-    </Router>
+    <QueryClientProvider client={queryClient}>
+      <Router>
+        <div className="App">
+          <Header />
+          <PersistGate persistor={persistor}>
+            <Routes>
+              <Route index to={"/"} element={<UserType />} />
+              <Route path={"/login"} element={<Login />} />
+              <Route path={"/register"} element={<Register />} />
+              <Route path={"/student/*"} element={<StudentRoutes />} />
+              <Route path={"/lecturer/*"} element={<LecturerRoutes />} />
+            </Routes>
+          </PersistGate>
+          {/* <Footer /> */}
+        </div>
+      </Router>
+    </QueryClientProvider>
   );
 }
 
