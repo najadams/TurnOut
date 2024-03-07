@@ -4,6 +4,7 @@ import axios from "axios";
 import { API_BASE_URL } from "../../containers";
 import { useGeolocated } from "react-geolocated";
 import { useSelector } from "react-redux";
+import { useQuery, useMutation } from "react-query";
 import Loader from "../common/Loader/Loader";
 import RenderTable from "./RenderTable";
 
@@ -15,12 +16,46 @@ const AttendanceDetails = () => {
     (state) => state.lecturer.lecturerInfo.user._id
   );
   const { classId } = useParams();
-  const prevCoords = useRef(null);
-  const [loading, setLoading] = useState(false);
-  const [students, setStudents] = useState();
-  const [className, setClassName] = useState("");
-  const [error, setError] = useState("");
+  // const prevCoords = useRef(null);
   const [portalStatus, setPortalStatus] = useState(false);
+  const [className, setClassName] = useState("");
+
+  const fetchStudents = async () => {
+    const response = await axios.get(
+      `${API_BASE_URL}/attendance/${classId}/${formattedDate}`
+    );
+    return response.data;
+  };
+
+  const fetchClassDetails = async () => {
+    const nameResponse = await axios.get(
+      `${API_BASE_URL}/class/name/${classId}`
+    );
+    const name = nameResponse.data.class.name;
+
+    const statusResponse = await axios.get(
+      `${API_BASE_URL}/api/classes/${classId}/portal-status`
+    );
+    const portal = statusResponse.data.portalStatus === "open";
+
+    return { name, portal };
+  };
+
+  const {
+    data: students,
+    isLoading: studentsLoading,
+    error: studentsError,
+    refetch: refetchStudents,
+  } = useQuery(["students", classId, referenceId], fetchStudents, {
+    enabled: portalStatus, // We'll manually trigger this query with refetchStudents
+  });
+
+  const {
+    data: classDetails,
+    isLoading: classDetailsLoading,
+    error: classDetailsError,
+  } = useQuery(["classDetails", classId], fetchClassDetails);
+
   const today = new Date();
   const formattedDate = today.toISOString().split("T")[0];
   const { coords, isGeolocationAvailable, isGeolocationEnabled } =
@@ -31,59 +66,20 @@ const AttendanceDetails = () => {
     });
 
   useEffect(() => {
-    const fetchClassDetails = async () => {
-      try {
-        setLoading(true);
-        const nameResponse = await axios.get(
-          `${API_BASE_URL}/class/name/${classId}`
-        );
-        const name = nameResponse.data.class.name;
-        setClassName(name);
-
-        const statusResponse = await axios.get(
-          `${API_BASE_URL}/api/classes/${classId}/portal-status`
-        );
-        setPortalStatus(statusResponse.data.portalStatus === "open");
-
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching class details", error);
-        setError("Error fetching class details");
-        setLoading(false);
-      }
-    };
-
-    fetchClassDetails();
-  }, [classId]);
+    if (classDetails) {
+      setPortalStatus(classDetails.portal);
+      setClassName(classDetails.name);
+      console.log(classDetails);
+    }
+  }, [classDetails]);
 
   useEffect(() => {
-    const getStudents = async () => {
-      try {
-        const data = await axios.get(
-          `${API_BASE_URL}/attendance/${classId}/${formattedDate}`
-        );
-        console.log(data.data);
-        setStudents(data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
     let intervalId;
 
     if (portalStatus) {
       intervalId = setInterval(() => {
-        // Send location only if there's a change in coords
-        //  if (
-        //    coords &&
-        //    (!prevCoords.current ||
-        //      coords.latitude !== prevCoords.current.latitude ||
-        //      coords.longitude !== prevCoords.current.longitude)
-        //  ) {
         sendLocation();
-        getStudents();
-        //  prevCoords.current = coords; // Update previous coords
-        //  }
+        refetchStudents(); // Refetch data every 10 seconds
       }, 10000);
     }
 
@@ -93,7 +89,7 @@ const AttendanceDetails = () => {
         clearInterval(intervalId);
       }
     };
-  }, [portalStatus, coords, referenceId, students]);
+  }, [portalStatus, coords, referenceId, refetchStudents]);
 
   const sendLocation = async () => {
     if (portalStatus && coords) {
@@ -107,19 +103,15 @@ const AttendanceDetails = () => {
 
   const handleAttendanceMarking = async () => {
     try {
-      setLoading(true);
       const portalEndpoint = portalStatus
         ? `${API_BASE_URL}/api/classes/${classId}/close-portal`
         : `${API_BASE_URL}/api/classes/${classId}/open-portal`;
 
       await axios.post(portalEndpoint, { lecturerId });
       sendLocation();
-      setLoading(false);
       setPortalStatus((prevState) => !prevState);
     } catch (error) {
       console.error("Error marking attendance", error);
-      setError("Error marking attendance");
-      setLoading(false);
     }
   };
 
@@ -133,7 +125,7 @@ const AttendanceDetails = () => {
       <div>
         {!portalStatus ? <h1>Start</h1> : <h1>End</h1>}
         <h2>{className} attendance</h2>
-        {loading ? (
+        {studentsLoading ? (
           <div style={{ width: "100%", height: "100%" }}>
             <Loader />
           </div>
@@ -150,7 +142,7 @@ const AttendanceDetails = () => {
             )}
           </div>
         )}
-        {error && <h2 className="error-message">{error}</h2>}
+        {/* {error && <h2 className="error-message">{error}</h2>} */}
       </div>
     </div>
   ) : (
