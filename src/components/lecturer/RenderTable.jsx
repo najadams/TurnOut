@@ -26,8 +26,8 @@ const RenderTable = ({ data, tableName }) => {
         </section>
         <section className="table__body">
           {loading ? (
-            // <p>Loading...</p>
-            <Loader />
+            <h2>Loading...</h2>
+            // <Loader />
           ) : (
             <table>
               <thead>
