@@ -4,6 +4,11 @@
   align-items: center;
   padding: 10px;
   /* background-color: #6ce361; */
+  /* background-image: linear-gradient(
+    to left,
+    rgb(177, 107, 210),
+    rgb(110, 108, 122)
+  ); */
   background-image: linear-gradient(
     to left,
     rgb(154, 38, 208),
