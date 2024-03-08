@@ -6,7 +6,7 @@
   background-size: cover; */
   /* background-color: #fff; */
   height: 100vh;
-  overflow: auto;
+  overflow: hidden;
   position: relative;
 }
 

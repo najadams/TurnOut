@@ -108,7 +108,7 @@ const StudentAttendance = () => {
       });
 
       console.log(markAttendanceResponse.data);
-
+      setAttendanceStatus(true)
       // Handle any further logic based on the response
     } catch (error) {
       console.error("Error handling attendance:", error);
