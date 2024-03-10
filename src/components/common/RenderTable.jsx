@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./RenderTable.css";
 import { API_BASE_URL } from "../../containers";
-import Loader from "../common/Loader/Loader";
+import Loader from "./Loader/Loader";
 
 const RenderTable = ({ data, tableName, loadingState }) => {
   const [column, setColumn] = useState([]);

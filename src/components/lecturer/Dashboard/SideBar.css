@@ -254,3 +254,15 @@ body.dark .switch::before {
 .sidebar.close ~ .main-content {
   margin-left: 78px;
 }
+
+@media screen and (max-width: 768px) {
+  .sidebar {
+    display: none; /* Hide the sidebar on small screens */
+    width: 0;
+  }
+
+  .sidebar.open ~ .main-content,
+  .sidebar.close ~ .main-content {
+    margin-left: 0; /* Adjust margin-left for main content on small screens */
+  }
+}

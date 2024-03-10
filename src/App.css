@@ -13,6 +13,7 @@
 .dashboard {
   position: relative;
   height: 92.5%;
+  width: 100%;
 }
 
 .Page-name {
@@ -95,4 +96,5 @@
 
 .main-content {
   width: 100%;
+  /* transition: var(--trans-01); */
 }

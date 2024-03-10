@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { API_BASE_URL } from "../../containers";
-import RenderTable from "./RenderTable";
+import RenderTable from "../common/RenderTable";
 import Loader from "../common/Loader/Loader";
 
 const ClassDetails = () => {

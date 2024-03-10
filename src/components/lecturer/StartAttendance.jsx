@@ -6,9 +6,9 @@ import { useGeolocated } from "react-geolocated";
 import { useSelector } from "react-redux";
 import { useQuery, useMutation } from "react-query";
 import Loader from "../common/Loader/Loader";
-import RenderTable from "./RenderTable";
+import RenderTable from "../common/RenderTable";
 
-const AttendanceDetails = () => {
+const StartAttendance = () => {
   const [markingAttendance, setMarkingAttendance] = useState(false);
   const referenceId = useSelector(
     (state) => state.lecturer.lecturerInfo.user.referenceId
@@ -124,7 +124,9 @@ const AttendanceDetails = () => {
     <div>Please check your Network and try again</div>
   ) : coords ? (
     <div>
-      <h2 className="Page-name">Mark Attendance</h2>
+      <h2 className="Page-name" style={{ paddingBottom: "10px" }}>
+        Mark Attendance
+      </h2>
       <div>
         {!portalStatus ? <h1>Start</h1> : <h1>End</h1>}
         <h2>{className} attendance</h2>
@@ -162,4 +164,4 @@ const AttendanceDetails = () => {
   );
 };
 
-export default AttendanceDetails;
+export default StartAttendance;
