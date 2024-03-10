@@ -15,7 +15,7 @@ const FilterBar = () => {
         <h1>☰</h1>
       </button>
 
-      <nav className={`nav ${isOpen ? "open" : ""}`}>
+      <nav className={`nav fcard ${isOpen ? "open" : ""}`}>
         <a href="#">Link 1</a>
         <a href="#">Link 2</a>
         <a href="#">Link 3</a>
