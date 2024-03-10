@@ -10,6 +10,7 @@ import ExcelUploader from "../components/lecturer/ExcelUploader";
 import ClassDetails from "../components/lecturer/ClassDetails";
 import Welcome from "../components/lecturer/Welcome";
 import StartAttendance from "../components/lecturer/StartAttendance";
+import Analytics from "../components/lecturer/Analytics";
 
 const LecturerRoutes = ({ userType, isLoggedIn }) => {
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ const LecturerRoutes = ({ userType, isLoggedIn }) => {
           <Route path="/classes" element={<LecturerClasses />} />
           <Route path="/createClass" element={<ExcelUploader />} />
           <Route path="/dashboard/class/:classId" element={<ClassDetails />} />
+          <Route path="/analytics" element={<Analytics />} />
         </Routes>
       </div>
     </div>

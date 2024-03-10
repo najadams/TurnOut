@@ -79,7 +79,7 @@ const SideBar = ({ logout }) => {
               </NavLink>
             </li>
             <li className="nav-link">
-              <a href="#">
+              <a href="/lecturer/analytics">
                 <i className="bx bxs-pie-chart-alt-2 icon"></i>
                 <span className="text nav-text">Analytics</span>
               </a>
