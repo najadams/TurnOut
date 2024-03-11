@@ -8,8 +8,6 @@
 
 .toggle-button {
   position: absolute;
-  /* top: 10px; */
-  /* left: 10px; */
   z-index: 2;
   width: 97%;
   display: flex;
@@ -18,11 +16,7 @@
   background-color: white;
 }
 
-/* .Filter button {
-  width: 98%;
-} */
-
-.nav {
+.Filter .nav {
   position: absolute;
   top: 0;
   left: 0;
@@ -40,4 +34,11 @@
 
 .nav.open {
   transform: translateY(0);
+}
+
+.Filter.close {
+  height: 80px;
+}
+.Filter.open {
+  margin-bottom: 50px;
 }

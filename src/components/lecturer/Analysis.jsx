@@ -5,6 +5,13 @@ const Analysis = () => {
   return (
     <div>
       <FilterBar />
+      <div className="analysis">
+        {/* <h2>hello</h2> */}
+        <div className="summary">coco</div>
+        <div className="summary">coco</div>
+        <div className="summary">coco</div>
+        <div className="summary">coco</div>
+      </div>
     </div>
   );
 };
