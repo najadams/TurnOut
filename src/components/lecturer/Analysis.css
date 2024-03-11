@@ -1,13 +1,53 @@
-/* .analysis {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-auto-rows: minmax(150px, auto);
-    margin: 0 auto;
-    gap: 10px;
-    grid-template-areas:
-    "header header header header"
-    "aside nav nav nav"
-    "aside main main main"
-    "aside section section section"
-    "footer footer footer footer";
-} */
+.analysis {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: minmax(150px, auto);
+  margin: 10px;
+  gap: 10px;
+  grid-template-areas:
+    "summary summary summary num_students"
+    "summary summary summary num_attendances"
+    "summary summary summary num_classes"
+    "summary summary summary num_classes"
+    "summary summary summary num_classes";
+}
+
+@media screen and (max-width : 1120px) {
+  .analysis {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: minmax(150px, auto);
+  margin: 10px;
+  gap: 10px;
+  grid-template-areas:
+    "num_students num_students  num_attendances num_attendances"
+    "num_students num_students num_attendances num_attendances"
+    "summary summary summary num_classes"
+    "summary summary summary num_classes"
+    "summary summary summary num_classes";
+}
+}
+.summary {
+  grid-area: summary;
+}
+.num_students {
+  grid-area: num_students;
+}
+.num_attendances {
+  grid-area: num_attendances;
+}
+.num_classes {
+  grid-area: num_classes;
+}
+
+.card-content {
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.analysis > * {
+  background-color: white;
+}
