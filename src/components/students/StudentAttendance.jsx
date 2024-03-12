@@ -146,7 +146,7 @@ const StudentAttendance = () => {
             </h4>
           </div>
         </div>
-        {error && <h2 className="error-message">{error}</h2>}
+        {/* {error && <h2 className="error-message">{error}</h2>} */}
       </div>
     </div>
   ) : (
