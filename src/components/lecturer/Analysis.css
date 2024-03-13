@@ -1,20 +1,21 @@
 .main-analysis {
   max-height: 95vh;
+  /* background-color: black; */
   overflow: scroll;
 }
 
 .analysis {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: minmax(115px, auto);
+  /* grid-auto-rows: minmax(115px, auto); */
   margin: 10px;
   gap: 10px;
   grid-template-areas:
-    "summary summary summary num_students"
-    "summary summary summary num_attendances"
-    "summary summary summary num_classes"
-    "summary summary summary num_classes"
-    "summary summary summary num_classes";
+    "summary summary summary data"
+    "summary summary summary data"
+    "summary summary summary filter"
+    "summary summary summary filter"
+    "summary summary summary filter";
 }
 
 @media screen and (max-width: 1120px) {
@@ -24,35 +25,47 @@
     grid-auto-rows: minmax(135px, auto);
     margin: 10px;
     gap: 10px;
+    overflow-x: hidden;
     grid-template-areas:
-    "num_students  num_attendances num_classes"
-    "num_students num_attendances num_classes"
+      "data  data data"
+      "filter filter filter"
       "summary summary summary"
-      "summary summary summary"
+      "summary summary summary" 
       "summary summary summary";
   }
 }
 .summary {
   grid-area: summary;
+  display: flex;
+  flex-direction: column;
 }
-.num_students {
-  grid-area: num_students;
+.data {
+  grid-area: data;
 }
-.num_attendances {
-  grid-area: num_attendances;
-}
-.num_classes {
-  grid-area: num_classes;
+.filter {
+  grid-area: filter;
 }
 
 .card-content {
   border-radius: 15px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-grow: 1;
 }
 
 .analysis > * {
   background-color: white;
+}
+.chart {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  /* background-color: black; */
+  justify-content: center;
+}
+.data {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
 }

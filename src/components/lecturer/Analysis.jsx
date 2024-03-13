@@ -1,63 +1,70 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import FilterBar from "../../containers/Filter/FilterBar";
 import "./Analysis.css";
 import { useQuery } from "react-query";
 import { API_BASE_URL } from "../../containers";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import AttendanceChart from "../common/AttendanceChart";
 
 const Analysis = () => {
-  const [numClasses, setNumClasses] = useState(0);
-  const [numStudents, setNumStudents] = useState(0);
-  const [numAttendance, setNumAttendance] = useState(0);
   const lecturerId = useSelector(
     (state) => state.lecturer.lecturerInfo.user._id
   );
 
-  useEffect(() => {
-    const fetchClassSummary = async (lecturerId) => {
-      try {
-        // Use axios to send a POST request with the lecturerId
-        const response = await axios.get(
-          `${API_BASE_URL}/lecturer/${lecturerId}/summary`
-        );
-        setNumClasses(response.data.length);
-        const classNames = response.data.map((coco) => coco.className);
-        const totaStudents = response.data.reduce(
-          (sum, coco) => sum + coco.studentCount,
-          0
-        );
-        const totalAttendance = response.data.reduce(
-          (sum, coco) => sum + coco.attendanceCount,
-          0
-        );
-        setNumAttendance(totalAttendance);
-        setNumStudents(totaStudents);
-        console.log(totaStudents);
-      } catch (error) {
-        console.error("Error fetching classes:", error);
-      }
-    };
+  const fetchClassSummary = async () => {
+    const response = await axios.get(
+      `${API_BASE_URL}/lecturer/${lecturerId}/summary`
+    );
+    return response.data;
+  };
 
-    fetchClassSummary(lecturerId);
-  }, [lecturerId]);
+  const { data, isLoading, error } = useQuery(
+    "classSummary",
+    fetchClassSummary
+  );
 
-  // const { data: numClasses } = useQuery(["NumClasses"]);
+  if (isLoading) return "Loading...";
+  if (error) return "An error has occurred: " + error.message;
+
+  const numClasses = data.length;
+  const numStudents = data.reduce((sum, item) => sum + item.studentCount, 0);
+  const numAttendance = data.reduce(
+    (sum, item) => sum + item.attendanceCount,
+    0
+  );
+
   return (
     <div className="main-analysis">
       <FilterBar />
       <div className="analysis">
-        {/* <h2>hello</h2> */}
-        <div className="num_students card-content">
-          num_students : {numStudents}
+        <div className="data card-content">
+          <div>
+            <h2>num_students :</h2> {numStudents}
+          </div>
+          <div>
+            <h2>num_attendances :</h2> {numAttendance}
+          </div>
+          <div>
+            <h2>num_classes : </h2>
+            {numClasses}{" "}
+          </div>
         </div>
-        <div className="num_attendances card-content">
-          num_attendances : {numAttendance}
+        <div className="filter card-content">coco</div>
+        <div className="summary card-content">
+          <div className="info">
+            <h2>summary</h2>
+          </div>
+          <div className="chart">
+            {data ? (
+              <AttendanceChart
+                data={data}
+                chartTitle={"Total classes you manage"}
+              />
+            ) : null}
+            {console.log(data)}
+          </div>
         </div>
-        <div className="num_classes card-content">
-          num_classes : {numClasses}{" "}
-        </div>
-        <div className="summary card-content">summary</div>
       </div>
     </div>
   );
