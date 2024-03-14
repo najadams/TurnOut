@@ -255,8 +255,8 @@ body.dark .switch::before {
 
 /* @media screen and (max-width: 768px) { */
 /* .sidebar { */
-display: none; /* Hide the sidebar on small screens */
-width: 0;
+/* display: none; Hide the sidebar on small screens */
+/* width: 0; */
 /* } */
 
 /* .sidebar.open ~ .main-content, */
